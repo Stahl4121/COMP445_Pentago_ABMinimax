@@ -52,10 +52,10 @@ public class Board {
 		for (int r = 0; r < quadrantSize; r++) {
 			for (int c = 0; c < quadrantSize; c++) {
 				if (clockwise) {
-					quad[c][-1 * r + 2] = board[r + x][c + y];
+					quad[c][2 - r] = board[r + x][c + y];
 				}
 				else {
-					quad[-1 * c + 2][r] = board[r + x][c + y];
+					quad[2 - c][r] = board[r + x][c + y];
 				}
 			}
 		}
