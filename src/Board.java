@@ -6,15 +6,14 @@ import java.util.Arrays;
  * [insert lawyer joke here]
  */
 public class Board {
-	Status[][] board;	//the Pentago board itself (it's a square)
-	int boardSize;		//the number of rows/columns in the board, which is a square
-	int quadrantSize;	//the size of a quadrant [and "most unnecessary variable in this project" goes to...]
+	private Status[][] board;	//the Pentago board itself (it's a square)
+	private final int BOARD_SIZE = 6;		//the number of rows/columns in the board, which is a square
+	private final int QUAD_SIZE = BOARD_SIZE / 2;	//the size of a quadrant [and "most unnecessary variable in this project" goes to...]
+	
 	public Board() {
-		boardSize = 6;
-		quadrantSize = boardSize / 2;
-		board = new Status[boardSize][boardSize];
-		for(int r = 0; r < boardSize; r++) {
-			for(int c = 0; c < boardSize; c++) {
+		board = new Status[BOARD_SIZE][BOARD_SIZE];
+		for(int r = 0; r < BOARD_SIZE; r++) {
+			for(int c = 0; c < BOARD_SIZE; c++) {
 				board[r][c] = Status.EMPTY;
 			}
 		}
@@ -39,21 +38,21 @@ public class Board {
 	 * false = rotate the board counterclockwise {what a long word}
 	 */
 	public void rotate(int quadrant, boolean clockwise) {
-		Status[][] quad = new Status[quadrantSize][quadrantSize]; //the new quadrant
+		Status[][] quad = new Status[QUAD_SIZE][QUAD_SIZE]; //the new quadrant
 		int x = 0; //starting row of our quadrant
 		int y = 0; //starting column of our quadrant
 		
 		//find the starting row or column of the board
 		if (quadrant == 1 || quadrant == 4) {
-			x = quadrantSize;
+			x = QUAD_SIZE;
 		}
 		if (quadrant == 3 || quadrant == 4) {
-			y = quadrantSize;
+			y = QUAD_SIZE;
 		}
 		
 		//move values from the board into quad, rotating them as you go
-		for (int r = 0; r < quadrantSize; r++) {
-			for (int c = 0; c < quadrantSize; c++) {
+		for (int r = 0; r < QUAD_SIZE; r++) {
+			for (int c = 0; c < QUAD_SIZE; c++) {
 				if (clockwise) {
 					quad[c][2 - r] = board[r + x][c + y];
 				}
@@ -88,25 +87,12 @@ public class Board {
 			//but empty cannot win so skip that one
 			if (s != Status.EMPTY) {
 				
-				//these arrays hold all the possible wins in the vertical, horizontal, and diagonal directions
-				boolean[][] horizontals = new boolean[boardSize][2];
-				boolean[][] verticals = new boolean[boardSize][2];
-				boolean[] diagonals = new boolean[8];
-				
-				//we initialize them all to true, but they will have to make it through the trial of fire to stay that way
-				for (int r = 0; r < boardSize; r++) {
-					for (int c = 0; c < 2; c++) {
-						horizontals[r][c] = true;
-						verticals[r][c] = true;
-					}
-				}
-				for (int c = 0; c < 8; c++) {
-					diagonals[c] = true;
-				}		
+				//There are 32 win conditions, if winCondFailed is less than 32, then it is a win
+				int winCondFailed = 0;	
 				
 				//loop through every index in the board
-				for (int r = 0; r < boardSize; r++) {
-					for (int c = 0; c < boardSize; c++) {
+				for (int r = 0; r < BOARD_SIZE; r++) {
+					for (int c = 0; c < BOARD_SIZE; c++) {
 						//if the index is not the state we are checking, then we eliminate some wins
 						if (board[r][c] != s) { 
 							/*
@@ -118,8 +104,8 @@ public class Board {
 							 * 0 0 0 0 0 0
 							 * 0 0 0 0 0 0
 							 */
-							if (c < boardSize - 1) {
-								horizontals[r][0] = false;
+							if (c < BOARD_SIZE - 1) {
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 0 (the row of ones could be any of the rows)
@@ -130,7 +116,7 @@ public class Board {
 							 * 0 0 0 0 0 0
 							 */
 							if (c > 0) {
-								horizontals[r][1] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 1 0 0 0 0 (the column of ones could be any of the columns)
@@ -140,8 +126,8 @@ public class Board {
 							 * 0 1 0 0 0 0
 							 * 0 0 0 0 0 0
 							 */
-							if (r < boardSize - 1) {
-								verticals[c][0] = false;
+							if (r < BOARD_SIZE - 1) {
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 0 (the column of ones could be any of the columns)
@@ -152,7 +138,7 @@ public class Board {
 							 * 0 1 0 0 0 0
 							 */
 							if (r > 0) {
-								verticals[c][1] = false;
+								winCondFailed++;
 							}
 							if (r == c) {
 								/*
@@ -164,7 +150,7 @@ public class Board {
 								 * 0 0 0 0 0 1
 								 */
 								if (r > 0) {
-									diagonals[0] = false;
+									winCondFailed++;
 								}
 								/*
 								 * 1 0 0 0 0 0
@@ -174,8 +160,8 @@ public class Board {
 								 * 0 0 0 0 1 0
 								 * 0 0 0 0 0 0
 								 */
-								if (r < boardSize - 1) {
-									diagonals[1] = false;
+								if (r < BOARD_SIZE - 1) {
+									winCondFailed++;
 								}
 							}
 							/*
@@ -187,7 +173,7 @@ public class Board {
 							 * 0 0 0 0 0 0
 							 */
 							if (r + 1 == c) {
-								diagonals[2] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 0
@@ -198,7 +184,7 @@ public class Board {
 							 * 0 0 0 0 1 0
 							 */
 							if (r - 1 == c) {
-								diagonals[3] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 1
@@ -209,7 +195,7 @@ public class Board {
 							 * 0 0 0 0 0 0
 							 */
 							if (r + c == 5 && r < 5) {
-								diagonals[4] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 0
@@ -220,7 +206,7 @@ public class Board {
 							 * 1 0 0 0 0 0
 							 */
 							if (r + c == 5 && r > 0) {
-								diagonals[5] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 1 0
@@ -231,7 +217,7 @@ public class Board {
 							 * 0 0 0 0 0 0
 							 */
 							if (r + c == 4) {
-								diagonals[6] = false;
+								winCondFailed++;
 							}
 							/*
 							 * 0 0 0 0 0 0 
@@ -242,24 +228,23 @@ public class Board {
 							 * 0 1 0 0 0 0
 							 */
 							if (r + c == 6) {
-								diagonals[7] = false;
+								winCondFailed++;
 							}
 						}
 					}
 				}
-				//if there's any true in any of the arrays, then we know this state has a win
-				for (int r = 0; r < boardSize; r++) {
-					for (int c = 0; c < 2; c++) {
-						if (horizontals[r][c] == true || verticals[r][c] == true) {
-							winner = s;
-						}
+				
+				if(winCondFailed < 32) {
+					//If winner isn't still status.empty, and the other player has won
+					//It is a tie and we return null
+					if (winner != Status.EMPTY) {
+						winner = null;
+						
 					}
-				}
-				for (int c = 0; c < 8; c++) {
-					if (diagonals[c] == true) {
+					else {
 						winner = s;
 					}
-				}	
+				}
 			}
 		}
 		return winner;
@@ -274,8 +259,8 @@ public class Board {
 	//returns the board
 	public String toString() {
 		String ret = "";
-		for (int r = 0; r < boardSize; r++) {
-			for (int c = 0; c < boardSize; c++) {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
 				ret += statusString(board[r][c]) + " ";
 			}
 			ret += "\n";
