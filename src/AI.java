@@ -1,13 +1,23 @@
-
+/**
+ * This Class creates an AI player for Pentago. 
+ * It inherits from the Player class, implementing the getMove method.
+ * @author STAHLLR1
+ *
+ */
 public class AI extends Player{
 	public int depth;
-	public Status color;
-	public AI(int difficulty, Status color) {
-		depth = difficulty;
+	
+	public AI(int depth, Status color) {
+		this.depth = depth;
 		this.color = color;
 	}
+	
+	/**
+	 * Starts the minimax process, and then makes the chosen move
+	 * @param b Takes in the current board 
+	 */
 	@Override
-	public void makeMove() {
+	public void makeMove(Board b) {
 		//where does he get the board from
 		minimax(b, depth, color);
 	}
