@@ -251,9 +251,15 @@ public class Board {
 		return 0;
 	}
 	
+	public Board move(Move m) {
+		//actually do the move on the board
+		return this;
+	}
+	
 	//incomplete
 	public ArrayList<Move> getPossibleMoves() {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		//fill the arraylist
 		return possibleMoves;
 	}
 	
