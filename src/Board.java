@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -250,7 +251,11 @@ public class Board {
 		return 0;
 	}
 	
-	
+	//incomplete
+	public ArrayList<Move> getPossibleMoves() {
+		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		return possibleMoves;
+	}
 	
 	//returns the board
 	public String toString() {

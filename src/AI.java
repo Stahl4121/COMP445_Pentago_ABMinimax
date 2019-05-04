@@ -4,6 +4,7 @@
  * @author STAHLLR1
  *
  */
+import java.util.ArrayList;
 public class AI extends Player{
 	public int depth;
 	
@@ -24,10 +25,10 @@ public class AI extends Player{
 	
 	//white is the maximizing player
 	//black is the minimizing player
-	public double minimax(Board b, int depth, Status s) {
-		double maxEval;
-		double minEval;
-		double eval;
+	public int minimax(Board b, int depth, Status s) {
+		int maxEval;
+		int minEval;
+		int eval;
 		
 		//figure out whether we are the maximizing player
 		boolean maximize = true;
@@ -35,19 +36,28 @@ public class AI extends Player{
 			maximize = false;
 		}
 		
+		if (depth == 0 /*or game over*/) {
+			return b.getBoardFavorability(s);
+		}
+		
 		if (maximize) {
-			maxEval = Double.NEGATIVE_INFINITY;
-			for (/*move in possible moves*/;;) {
-				eval = minimax(b, depth, s);
+			maxEval = Integer.MAX_VALUE;
+			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			for (int i = 0; i < possibleMoves.size(); i++) {
+				Move m = possibleMoves.get(i);
+				eval = minimax(b.move(m), depth - 1, s);
 				maxEval = Math.max(maxEval, eval);
 			}
 			return maxEval;
 		}
+		
 		else {
-			minEval = Double.POSITIVE_INFINITY;
-			for (/*move in possible moves*/;;) {
-				eval = minimax(b, depth, s);
-				minEval = Math.min(minEval, eval);
+			minEval = Integer.MIN_VALUE;
+			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			for (int i = 0; i < possibleMoves.size(); i++) {
+				Move m = possibleMoves.get(i);
+				eval = minimax(b.move(m), depth, s);
+				minEval = Math.min(minEval - 1, eval);
 			}
 			return minEval;
 		}
