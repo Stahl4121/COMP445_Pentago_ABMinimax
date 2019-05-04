@@ -265,6 +265,12 @@ public class Board {
 		return winner;
 	}
 	
+	public int getBoardFavorability(Status s) {
+		return 0;
+	}
+	
+	
+	
 	//returns the board
 	public String toString() {
 		String ret = "";

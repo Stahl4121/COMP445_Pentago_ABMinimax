@@ -1,7 +1,7 @@
 // do we have a package for all our files?
 
+
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -106,8 +106,8 @@ public class PentagoUI extends Application {
 			ellipse.centerYProperty().bind(this.heightProperty().divide(2));
 			ellipse.radiusXProperty().bind(this.widthProperty().divide(2).subtract(10));
 			ellipse.radiusYProperty().bind(this.heightProperty().divide(2).subtract(10));
-			ellipse.setStroke(c);
-			ellipse.setFill(c);
+			//ellipse.setStroke(c);
+			//ellipse.setFill(c);
 			getChildren().add(ellipse);	
 		}
 	}
