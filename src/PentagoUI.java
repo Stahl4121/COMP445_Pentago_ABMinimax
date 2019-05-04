@@ -4,13 +4,15 @@
  * https://www.youtube.com/watch?v=YJjqZIyUIrM
  */
 
-import java.awt.Color;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
