@@ -70,9 +70,6 @@ public class Board {
 		}
 	}
 	
-	
-	
-	
 	//sorry it's ugly
 	/**
 	 * @return the winner of the game
@@ -238,8 +235,7 @@ public class Board {
 					//If winner isn't still status.empty, and the other player has won
 					//It is a tie and we return null
 					if (winner != Status.EMPTY) {
-						winner = null;
-						
+						winner = null;					
 					}
 					else {
 						winner = s;

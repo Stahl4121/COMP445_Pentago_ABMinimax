@@ -6,6 +6,9 @@ public class Move {
 	private int row;
 	private int col;
 	private Status stat;
+	private boolean rotate;
+	private boolean clockwise;
+	private int rotQuad;
 
 
 	/**
@@ -14,11 +17,13 @@ public class Move {
 	 * @param c column of move
 	 * @param piece Colour of piece being placed
 	 */
-	public Move(int r,int c, Status piece){
+	public Move(int r,int c, Status piece, boolean rot, boolean clockW, int rotQ){
 		row=r;
 		col=c;
 		stat=piece;
-
+		rotate=rot;
+		clockwise=clockW;
+		rotQuad=rotQ;
 	}
 
 	/**
@@ -29,6 +34,9 @@ public class Move {
 		this.row=m.row;
 		this.col=m.col;
 		this.stat=m.stat;
+		this.rotate=m.rotate;
+		this.clockwise=m.clockwise;
+		this.rotQuad=m.rotQuad;
 
 	}
 	
@@ -40,6 +48,9 @@ public class Move {
 		row=-1;
 		col=-1;
 		stat=Status.EMPTY;
+		rotate=false;
+		clockwise=false;
+		rotQuad=-1;
 	}
 	/**
 	 * 
@@ -65,4 +76,27 @@ public class Move {
 		return stat;
 	}
 
+	/**
+	 * 
+	 * @return Returns if there is a rotation for the move object
+	 */
+	public boolean getRotation(){
+		return rotate;
+	}
+	
+	/**
+	 * 
+	 * @return Returns rotation direction  for the move object
+	 */
+	public boolean getRotationDir(){
+		return clockwise;
+	}
+	
+	/**
+	 * 
+	 * @return Returns the quadrant to rotate for the move object
+	 */
+	public int getRotQuad(){
+		return rotQuad;
+	}
 }
