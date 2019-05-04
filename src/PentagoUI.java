@@ -1,4 +1,8 @@
-// do we have a package for all our files?
+/*
+ * 
+ * Used Silvain Saurel's Tic Tac Toe JavaFX tutorial
+ * https://www.youtube.com/watch?v=YJjqZIyUIrM
+ */
 
 
 import javafx.application.Application;
