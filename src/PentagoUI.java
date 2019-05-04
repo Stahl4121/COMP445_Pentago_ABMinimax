@@ -12,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
@@ -37,7 +36,7 @@ public class PentagoUI extends Application {
 		borderPane.setCenter(pane);
 		borderPane.setBottom(statusMsg);
 		
-		Scene scene = new Scene(borderPane, 450, 300);
+		Scene scene = new Scene(borderPane, 420, 420);
 		primaryStage.setTitle("Pentago");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -115,4 +114,7 @@ public class PentagoUI extends Application {
 			getChildren().add(ellipse);	
 		}
 	}
+	
+	public static void main(String[] args) { launch(args); }
+
 }
