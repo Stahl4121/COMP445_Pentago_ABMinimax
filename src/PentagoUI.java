@@ -1,14 +1,15 @@
 // do we have a package for all our files?
 
 import java.awt.Color;
-import java.awt.Label;
-
 import javafx.application.Application;
-import javafx.scene.control.label;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
-public
 public class PentagoUI extends Application {
 	private char currentPlayer = 'B';
 	private int boardSize = 6;
@@ -103,8 +104,8 @@ public class PentagoUI extends Application {
 			ellipse.centerYProperty().bind(this.heightProperty().divide(2));
 			ellipse.radiusXProperty().bind(this.widthProperty().divide(2).subtract(10));
 			ellipse.radiusYProperty().bind(this.heightProperty().divide(2).subtract(10));
-			ellipse.setStroke(c);
-			ellipse.setFill(c);
+			//ellipse.setStroke(c);
+			//ellipse.setFill(c);
 			getChildren().add(ellipse);	
 		}
 	}
