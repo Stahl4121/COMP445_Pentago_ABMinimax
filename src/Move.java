@@ -15,7 +15,10 @@ public class Move {
 	 * Constructor for Move
 	 * @param r row of move
 	 * @param c column of move
-	 * @param piece Colour of piece being placed
+	 * @param piece Color of piece being placed
+	 * @param rot whether the move involves a rotation
+	 * @param clockW the rotation direction of the move
+	 * @param rotQ the quadrant rotated for the move
 	 */
 	public Move(int r,int c, Status piece, boolean rot, boolean clockW, int rotQ){
 		row=r;
