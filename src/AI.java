@@ -4,6 +4,7 @@
  * @author STAHLLR1
  *
  */
+import java.util.ArrayList;
 public class AI extends Player{
 	public int depth;
 	
@@ -35,19 +36,28 @@ public class AI extends Player{
 			maximize = false;
 		}
 		
+		if (depth == 0 /*or game over*/) {
+			return b.getBoardFavorability(s);
+		}
+		
 		if (maximize) {
 			maxEval = Integer.MAX_VALUE;
-			for (;;/*move in possible moves*/) {
-				eval = minimax(b, depth - 1, s);
+			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			for (int i = 0; i < possibleMoves.size(); i++) {
+				Move m = possibleMoves.get(i);
+				eval = minimax(b.move(m), depth - 1, s);
 				maxEval = Math.max(maxEval, eval);
 			}
 			return maxEval;
 		}
+		
 		else {
 			minEval = Integer.MIN_VALUE;
-			for (/*move in possible moves*/) {
-				eval = minimax(b, depth, s);
-				minEval = Math.min(minEval - , eval);
+			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			for (int i = 0; i < possibleMoves.size(); i++) {
+				Move m = possibleMoves.get(i);
+				eval = minimax(b.move(m), depth, s);
+				minEval = Math.min(minEval - 1, eval);
 			}
 			return minEval;
 		}
