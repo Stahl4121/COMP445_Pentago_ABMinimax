@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * @author Tan, Stahl, Calvis
  * Represent and manipulate the Pentago Board
@@ -77,5 +79,85 @@ public class Board {
 			ret += "\n";
 		}
 		return ret;
+	}
+	
+	//sorry it's ugly
+	public Status winner() {
+		Status winner = Status.EMPTY;
+		for (Status s: Status.values()) {
+			if (s != Status.EMPTY) {
+				boolean[][] horizontals = new boolean[boardSize][2];
+				boolean[][] verticals = new boolean[boardSize][2];
+				boolean[] diagonals = new boolean[8];
+				for (int r = 0; r < boardSize; r++) {
+					for (int c = 0; c < 2; c++) {
+						horizontals[r][c] = true;
+						verticals[r][c] = true;
+					}
+				}
+				for (int c = 0; c < 8; c++) {
+					diagonals[c] = true;
+				}		
+				
+				for (int r = 0; r < boardSize; r++) {
+					for (int c = 0; c < boardSize; c++) {
+						if (board[r][c] != s) { 
+							if (c < boardSize - 1) {
+								horizontals[r][0] = false;
+							}
+							if (c > 0) {
+								horizontals[r][1] = false;
+							}
+							if (r < boardSize - 1) {
+								verticals[c][0] = false;
+							}
+							if (r > 0) {
+								verticals[c][1] = false;
+							}
+							if (r == c) {
+								if (r > 0) {
+									diagonals[0] = false;
+								}
+								if (r < boardSize - 1) {
+									diagonals[1] = false;
+								}
+							}
+							if (r + 1 == c) {
+								diagonals[2] = false;
+							}
+							if (r - 1 == c) {
+								diagonals[3] = false;
+							}
+							if (r + c == 5 && r < 5) {
+								diagonals[4] = false;
+							}
+							if (r + c == 5 && r > 0) {
+								diagonals[5] = false;
+							}
+							if (r + c == 4) {
+								diagonals[6] = false;
+							}
+							if (r + c == 6) {
+								diagonals[7] = false;
+							}
+						}
+					}
+				}
+				//to do: add a check for bools
+				for (int r = 0; r < boardSize; r++) {
+					for (int c = 0; c < 2; c++) {
+						if (horizontals[r][c] == true || verticals[r][c] == true) {
+							winner = s;
+						}
+					}
+				}
+				for (int c = 0; c < 8; c++) {
+					if (diagonals[c] == true) {
+						winner = s;
+					}
+				}	
+			}
+		}
+		return winner;
 	}
 }
