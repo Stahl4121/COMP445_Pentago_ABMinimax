@@ -21,13 +21,26 @@ public class Board {
 		}
 	}
 	
-	//you already know what it is
-	public void addWhiteMarble(int r, int c) {
-		board[r][c] = Status.WHITE;
+	/**
+	 * copy constructor for board
+	 * @param b
+	 */
+	public Board(Board b) {
+		board = new Status[BOARD_SIZE][BOARD_SIZE];
+		for(int r = 0; r < BOARD_SIZE; r++) {
+			for(int c = 0; c < BOARD_SIZE; c++) {
+				board[r][c] = b.getStatus(r, c);
+			}
+		}
 	}
 	
-	public void addBlackMarble(int r, int c) {
-		board[r][c] = Status.BLACK;
+	public Status getStatus(int r, int c) {
+		return board[r][c];
+	}
+	
+	//you already know what it is
+	public void addMarble(int r, int c, Status s) {
+		board[r][c] = s;
 	}
 	
 	/**
@@ -248,7 +261,11 @@ public class Board {
 		return winner;
 	}
 	
-	//positive favors white, negative favors black
+	/**
+	 * @return the favorability value of the board based on the number of runs
+	 * > 0 favors white
+	 * < 0 favors black
+	 */
 	public int getBoardFavorability() {
 		HashMap<Status, int[]> maxRun = new HashMap<Status, int[]>();
 		int[] b = new int[18];
@@ -259,7 +276,6 @@ public class Board {
 		}
 		maxRun.put(Status.BLACK, b);
 		maxRun.put(Status.WHITE, w);
-		System.out.println(maxRun);
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				//if the index is not the state we are checking, then we eliminate some wins
@@ -270,8 +286,6 @@ public class Board {
 						s2 = Status.WHITE;
 					}
 					//horizontals
-					System.out.println(s1);
-					System.out.println(maxRun.get(s1));
 					maxRun.get(s1)[r]++;
 					maxRun.get(s2)[r] = 0;
 					//vertical
@@ -313,16 +327,37 @@ public class Board {
 		return favorability;
 	}
 	
+	
+	/**
+	 * @param m a move
+	 * @return what the board would be were m executed
+	 */
 	public Board move(Move m) {
-		//actually do the move on the board
-		return this;
+		Board b = new Board(this);
+		b.addMarble(m.getRow(), m.getCol(), m.getColor());
+		if (m.getRotation() != 0) {
+			b.rotate(Math.abs(m.getRotation()), m.getRotation() > 0);
+		}
+		return b;
 	}
 	
-	//incomplete
-	public ArrayList<Move> getPossibleMoves() {
-		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		//fill the arraylist
-		return possibleMoves;
+	
+	/**
+	 * @param player
+	 * @return all the moves that player can do
+	 */
+	public ArrayList<Move> getPossibleMoves(Status player) {
+		ArrayList<Move> moves = new ArrayList<Move>();
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				if (board[r][c] == Status.EMPTY) {
+					for (int q = -4; q < 5; q++) {
+						moves.add(new Move(r, c, player, q));
+					}
+				}
+			}
+		}
+		return moves;
 	}
 	
 	//returns the board
@@ -337,8 +372,6 @@ public class Board {
 		return ret;
 	}
 	
-	//can't figure out toString for enums
-	//can fix later sorry
 	/**
 	 * @param s- the status
 	 * @return a string: B for BLACK, W for WHITE, E for EMPTY

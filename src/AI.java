@@ -42,7 +42,7 @@ public class AI extends Player{
 		
 		if (maximize) {
 			maxEval = Integer.MAX_VALUE;
-			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 			for (int i = 0; i < possibleMoves.size(); i++) {
 				Move m = possibleMoves.get(i);
 				eval = minimax(b.move(m), depth - 1, s);
@@ -53,7 +53,7 @@ public class AI extends Player{
 		
 		else {
 			minEval = Integer.MIN_VALUE;
-			ArrayList<Move> possibleMoves = b.getPossibleMoves();
+			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 			for (int i = 0; i < possibleMoves.size(); i++) {
 				Move m = possibleMoves.get(i);
 				eval = minimax(b.move(m), depth, s);

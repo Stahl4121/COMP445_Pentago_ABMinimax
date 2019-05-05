@@ -6,22 +6,21 @@ public class Move {
 	private int row;
 	private int col;
 	private Status stat;
-	private int rotation;
+	private int rot;
 
 
 	/**
 	 * Constructor for Move
 	 * @param r row of move
 	 * @param c column of move
-	 * @param piece Color of piece being placed
-	 * @param rot whether the move involves a rotation
-	 * 
+	 * @param piece Colour of piece being placed
 	 */
-	public Move(int r,int c, Status piece, int rot){
+	public Move(int r,int c, Status piece, int rotation){
 		row=r;
 		col=c;
 		stat=piece;
-		rotation=rot;
+		rot = rotation;
+
 	}
 
 	/**
@@ -32,7 +31,7 @@ public class Move {
 		this.row=m.row;
 		this.col=m.col;
 		this.stat=m.stat;
-		this.rotation=m.rotation;
+
 	}
 	
 	/**
@@ -43,7 +42,6 @@ public class Move {
 		row=-1;
 		col=-1;
 		stat=Status.EMPTY;
-		rotation=0;
 	}
 	/**
 	 * 
@@ -68,13 +66,16 @@ public class Move {
 	public Status getColor(){
 		return stat;
 	}
-
+	
 	/**
 	 * 
-	 * @return Returns if there is a rotation for the move object
+	 * @return Returns rotation direction for a move
+	 * <0 => counter-clockwise
+	 * >0 => clockwise
+	 * =0 => no rotation
 	 */
 	public int getRotation(){
-		return rotation;
+		return rot;
 	}
-	
+
 }
