@@ -36,7 +36,7 @@ public class AI extends Player{
 			maximize = false;
 		}
 		
-		if (depth == 0 /*or game over*/) {
+		if (depth == 0 || b.getPossibleMoves(s).isEmpty() || b.winner() != Status.EMPTY) {
 			return b.getBoardFavorability();
 		}
 		
