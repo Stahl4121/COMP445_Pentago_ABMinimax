@@ -13,7 +13,7 @@ public class Move {
 	 * Constructor for Move
 	 * @param r row of move
 	 * @param c column of move
-	 * @param piece Colour of piece being placed
+	 * @param piece Color of piece being placed <--lol isn't colour british? or is this for purebreds?
 	 */
 	public Move(int r,int c, Status piece, int rotation){
 		row=r;
