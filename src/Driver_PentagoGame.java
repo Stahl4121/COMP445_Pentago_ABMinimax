@@ -7,11 +7,27 @@ public class Driver_PentagoGame {
 	public static void main(String[] args) throws IOException {
 		//PROJECT TODO (Not necessarily in this class):
 		Board b = new Board();
-		b.getBoardFavorability();
+		//System.out.println("Favorablility: " + b.getBoardFavorability());
+		b.addMarble(0, 4, Status.BLACK);
+		b.addMarble(3, 3, Status.WHITE);
+		b.addMarble(2, 2, Status.WHITE);
+		b.addMarble(5, 0, Status.BLACK);
+		b.addMarble(1, 1, Status.WHITE);
+		b.addMarble(5, 4, Status.WHITE);
+		System.out.println(b);
+		
+		for (int i = 1; i < 5; i++) {
+			System.out.println("Q"+i+" rotated counterclockwise");
+			b.rotate(i, false);
+			System.out.println(b);
+			System.out.println("Q"+i+" rotated clockwise");
+			b.rotate(i, true);
+			System.out.println(b);
+		}
 		//Create Pentago Game Structure (Board, moves, inputs, check win/lose conditions) {<- done i think}
 		//Create UI for game? (Maybe not too much harder than doing a console printed UI)
 		
-		play(b);
+		//play(b);
 		//Enable user to make inputs (get 2-player working)
 		//Write minimax
 		//Write alpha-beta 

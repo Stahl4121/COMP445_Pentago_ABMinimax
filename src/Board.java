@@ -39,8 +39,25 @@ public class Board {
 	}
 	
 	//you already know what it is
+	/**
+	 * @param r row
+	 * @param c column
+	 * @param s color
+	 * adds a marble to the board
+	 */
 	public void addMarble(int r, int c, Status s) {
 		board[r][c] = s;
+	}
+	
+	/**
+	 * clears the board
+	 */
+	public void clear() {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				board[r][c] = Status.EMPTY;
+			}
+		}
 	}
 	
 	/**
@@ -60,10 +77,10 @@ public class Board {
 		
 		//find the starting row or column of the board
 		if (quadrant == 1 || quadrant == 4) {
-			x = QUAD_SIZE;
+			y = QUAD_SIZE;
 		}
 		if (quadrant == 3 || quadrant == 4) {
-			y = QUAD_SIZE;
+			x = QUAD_SIZE;
 		}
 		
 		//move values from the board into quad, rotating them as you go
@@ -79,9 +96,9 @@ public class Board {
 		}
 		
 		//replace old quadrant of board with quad
-		for (int r = x; r < x + 3; r++) {
-			for (int c = y; c < y + 3; c++) {
-				board[r + x][c + y] = quad[r][c];
+		for (int r = x; r < x + QUAD_SIZE; r++) {
+			for (int c = y; c < y + QUAD_SIZE; c++) {
+				board[r][c] = quad[r - x][c - y];
 			}
 		}
 	}
