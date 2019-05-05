@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 /**
  * A Player class for Person and 
@@ -12,9 +13,10 @@ public abstract class Player {
 	/**
 	 * A method overwritten in both child classes,
 	 * allowing child classes to make a move on the board.
+	 * @throws IOException 
 	 * 
 	 */
-	abstract public void makeMove(Board b);
+	abstract public void makeMove(Board b) throws IOException;
 	
 	/**
 	 * A simple getter for the 

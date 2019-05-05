@@ -53,6 +53,7 @@ public class Board {
 	 * false = rotate the board counterclockwise {what a long word}
 	 */
 	public void rotate(int quadrant, boolean clockwise) {
+		if (quadrant == 0) {return;}
 		Status[][] quad = new Status[QUAD_SIZE][QUAD_SIZE]; //the new quadrant
 		int x = 0; //starting row of our quadrant
 		int y = 0; //starting column of our quadrant
@@ -384,5 +385,17 @@ public class Board {
 			return "W";
 		}
 		return "E";
+	}
+
+	/**
+	 * @param rot- value in range [-4,4]
+	 */
+	public void parseAndRotate(int rot) {
+		int quad = Math.abs(rot);
+		boolean clockwise = false;
+		if(rot > 0) {
+			clockwise = true;
+		}
+		this.rotate(quad, clockwise);
 	}
 }
