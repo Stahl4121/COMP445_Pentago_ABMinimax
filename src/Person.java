@@ -17,16 +17,12 @@ public class Person extends Player{
     	System.out.println("Input your next move");
         while(true) {
 	        String s = input.readLine(); 
-	        String[] tokens = s.split("");
-	        System.out.println(tokens);
-	        /*
+	        String[] tokens = s.split(" ");
+	        
 	        int row = Integer.parseInt(tokens[0]);
 	        int col = Integer.parseInt(tokens[1]);
 	        int rot = Integer.parseInt(tokens[2]);
-	        */
-	        int row = 0;
-	        int col = 0;
-	        int rot = 0;
+	      
 	        if (b.getStatus(row, col) == Status.EMPTY) {
 	        	b.addMarble(row, col, this.color);
 	        	b.parseAndRotate(rot);
