@@ -25,15 +25,17 @@ public class Driver_PentagoGame {
 	private static void play(Board b) throws IOException {
 		
 		Person sarah = new Person(Status.WHITE);
-		AI ai = new AI(DEPTH, Status.BLACK);
+		Person miriam = new Person(Status.BLACK);
+		//AI ai = new AI(DEPTH, Status.BLACK);
 		        
         while(b.winner()==Status.EMPTY) {        	
         	sarah.makeMove(b);
 	        // show player's move
 	        System.out.println(b.toString());
 	        //AI makes a move
-			ai.makeMove(b);
-	     // show AI's move
+	        //ai.makeMove(b);
+			miriam.makeMove(b);
+			// show AI's move
 	        System.out.println(b.toString());
 		}
         System.out.println(b.winner() + " was the winner");
