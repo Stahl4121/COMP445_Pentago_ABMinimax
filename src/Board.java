@@ -390,28 +390,28 @@ public class Board {
 					maxRun.get(s2)[r + 6] = 0;
 					//diagonal
 					if (r == c) {
+						maxRun.get(s1)[12]++;
+						maxRun.get(s2)[12] = 0;
+					}
+					if (r + 1 == c) {
 						maxRun.get(s1)[13]++;
 						maxRun.get(s2)[13] = 0;
 					}
-					if (r + 1 == c) {
+					if (r - 1 == c) {
 						maxRun.get(s1)[14]++;
 						maxRun.get(s2)[14] = 0;
 					}
-					if (r - 1 == c) {
+					if (r + c == 5) {
 						maxRun.get(s1)[15]++;
 						maxRun.get(s2)[15] = 0;
 					}
-					if (r + c == 5) {
-						maxRun.get(s1)[16]++;
-						maxRun.get(s2)[16] = 0;
-					}
 					if (r + c == 4) {
-						maxRun.get(s1)[17]++;
-						maxRun.get(s2)[17]++;
+						maxRun.get(s1)[16]++;
+						maxRun.get(s2)[16]++;
 					}
 					if (r + c == 6) {
-						maxRun.get(s1)[18]++;
-						maxRun.get(s2)[18] = 0;
+						maxRun.get(s1)[17]++;
+						maxRun.get(s2)[17] = 0;
 					}
 				}
 			}
