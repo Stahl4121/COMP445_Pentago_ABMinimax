@@ -19,16 +19,15 @@ public class AI extends Player{
 	 */
 	@Override
 	public void makeMove(Board b) {
-		//where does he get the board from
-		minimax(b, depth, color);
+		b.move(minimax(b, depth, color));
 	}
 	
 	//white is the maximizing player
 	//black is the minimizing player
-	public int minimax(Board b, int depth, Status s) {
-		int maxEval;
-		int minEval;
-		int eval;
+	public Move minimax(Board b, int depth, Status s) {
+		Move maxEval;
+		Move minEval;
+		Move eval;
 		
 		//figure out whether we are the maximizing player
 		boolean maximize = true;
@@ -37,27 +36,31 @@ public class AI extends Player{
 		}
 		
 		if (depth == 0 || b.getPossibleMoves(s).isEmpty() || b.winner() != Status.EMPTY) {
-			return b.getBoardFavorability();
+			return new Move(new Move(), b.getBoardFavorability());
 		}
 		
 		if (maximize) {
-			maxEval = Integer.MAX_VALUE;
+			maxEval = new Move(new Move(), Integer.MAX_VALUE);
 			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 			for (int i = 0; i < possibleMoves.size(); i++) {
 				Move m = possibleMoves.get(i);
 				eval = minimax(b.move(m), depth - 1, s);
-				maxEval = Math.max(maxEval, eval);
+				if (eval.getFavorability() > maxEval.getFavorability()) {
+					maxEval = new Move(eval, eval.getFavorability());
+				}
 			}
 			return maxEval;
 		}
 		
 		else {
-			minEval = Integer.MIN_VALUE;
+			minEval = new Move(new Move(), Integer.MAX_VALUE);
 			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 			for (int i = 0; i < possibleMoves.size(); i++) {
 				Move m = possibleMoves.get(i);
 				eval = minimax(b.move(m), depth, s);
-				minEval = Math.min(minEval - 1, eval);
+				if (eval.getFavorability() < minEval.getFavorability()) {
+					minEval = new Move(eval, eval.getFavorability());
+				}
 			}
 			return minEval;
 		}

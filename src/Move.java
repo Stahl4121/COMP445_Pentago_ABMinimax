@@ -7,7 +7,7 @@ public class Move {
 	private int col;
 	private Status stat;
 	private int rot;
-
+	private int favorability;
 
 	/**
 	 * Constructor for Move
@@ -20,8 +20,9 @@ public class Move {
 		col=c;
 		stat=piece;
 		rot = rotation;
-
 	}
+	
+	
 
 	/**
 	 * Copy constructor for Move
@@ -31,7 +32,20 @@ public class Move {
 		this.row=m.row;
 		this.col=m.col;
 		this.stat=m.stat;
-
+	}
+	
+	
+	
+	/**
+	 * Copy constructor that allows us to add favorability for move
+	 * @param m a move we copy
+	 * @param fav
+	 */
+	public Move(Move m, int fav){
+		this.row=m.row;
+		this.col=m.col;
+		this.stat=m.stat;
+		favorability = fav;
 	}
 	
 	/**
@@ -77,5 +91,28 @@ public class Move {
 	public int getRotation(){
 		return rot;
 	}
-
+	
+	/**
+	 * @return the favorability of this move
+	 */
+	public int getFavorability() {
+		return favorability;
+	}
+	
+	public String toString() {
+		String ro;
+		if (rot == 0) {
+			ro = " no rotation";
+		}
+		else {
+			ro = ", quadrant: " + Integer.toString(Math.abs(rot));
+			if (rot > 0) {
+				ro += " clockwise";
+			}
+			else {
+				ro += " counterclockwise";
+			}
+		}
+		return stat + ": row "+row+", column "+col+ro;
+	}
 }
