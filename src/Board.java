@@ -280,24 +280,39 @@ public class Board {
 
 	//sorry it's ugly
 		public Status winner() {
+			
 			Status winner = Status.EMPTY;
+			boolean isBoardFull = true;
+			
+			//Check wins for black and white players
 			for (Status s: Status.values()) {
+				
+				//Only check wins for black/white, not for empty
 				if (s != Status.EMPTY) {
+					
 					boolean[][] horizontals = new boolean[BOARD_SIZE][2];
 					boolean[][] verticals = new boolean[BOARD_SIZE][2];
 					boolean[] diagonals = new boolean[8];
+					
 					for (int r = 0; r < BOARD_SIZE; r++) {
 						for (int c = 0; c < 2; c++) {
 							horizontals[r][c] = true;
 							verticals[r][c] = true;
 						}
 					}
+					
 					for (int c = 0; c < 8; c++) {
 						diagonals[c] = true;
 					}		
 
 					for (int r = 0; r < BOARD_SIZE; r++) {
 						for (int c = 0; c < BOARD_SIZE; c++) {
+							
+							//Check if the board is actually full
+							if (isBoardFull && board[r][c] == Status.EMPTY) {
+								isBoardFull = false;
+							}
+							
 							if (board[r][c] != s) { 
 								if (c < BOARD_SIZE - 1) {
 									horizontals[r][0] = false;
@@ -339,22 +354,47 @@ public class Board {
 								}
 							}
 						}
-					}
+					}					
+					
 					//to do: add a check for bools
 					for (int r = 0; r < BOARD_SIZE; r++) {
 						for (int c = 0; c < 2; c++) {
-							if (horizontals[r][c] == true || verticals[r][c] == true) {
-								winner = s;
+							if (horizontals[r][c] || verticals[r][c]) {
+								
+								//If winner isn't still status.empty, and the other player has won
+								//It is a tie and we return null
+								if (winner != Status.EMPTY) {
+									return null;
+								}
+								else {
+									winner = s;
+									break;
+								}
 							}
 						}
 					}
+					
 					for (int c = 0; c < 8; c++) {
-						if (diagonals[c] == true) {
-							winner = s;
+						if (diagonals[c]) {
+							//If winner isn't still status.empty, and the other player has won
+							//It is a tie and we return null
+							if (winner != Status.EMPTY) {
+								return null;					
+							}
+							else {
+								winner = s;
+								break;
+							}							
 						}
 					}	
 				}
 			}
+		
+			//If the board is full and neither has won, return null for a tie
+			if(isBoardFull && winner == Status.EMPTY) {
+				winner = null;
+			}
+			
 			return winner;
 		}
 	
