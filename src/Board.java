@@ -504,7 +504,13 @@ public class Board {
 	public String toString() {
 		String ret = "";
 		for (int r = 0; r < BOARD_SIZE; r++) {
+			if (r == 3) {
+				ret += "--------------\n";
+			}
 			for (int c = 0; c < BOARD_SIZE; c++) {
+				if (c == 3) {
+					ret += "| ";
+				}
 				ret += statusString(board[r][c]) + " ";
 			}
 			ret += "\n";
