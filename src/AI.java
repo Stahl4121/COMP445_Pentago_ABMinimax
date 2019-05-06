@@ -7,7 +7,7 @@
 import java.util.ArrayList;
 public class AI extends Player{
 	public int maxDepth;
-	
+	public static int numMoves;
 	public AI(int maxDepth, Status color) {
 		this.maxDepth = maxDepth;
 		this.color = color;
@@ -41,7 +41,7 @@ public class AI extends Player{
 		ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 
 		if (depth == 0 || possibleMoves.isEmpty() || b.winner() != Status.EMPTY) {
-			return b.getBoardFavorability();
+			return b.getBoardFavorability(s);
 		}
 				
 		if (maximize) {
@@ -55,6 +55,7 @@ public class AI extends Player{
 				
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
+				numMoves++;
 				eval = minimax(copy.move(m), depth - 1, alpha, beta, s);
 				
 				if (eval > maxEval) {
@@ -90,6 +91,7 @@ public class AI extends Player{
 				
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
+				numMoves++;
 				eval = minimax(copy.move(m), depth, alpha, beta, s);
 				
 				if (eval < minEval) {

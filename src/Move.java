@@ -29,9 +29,10 @@ public class Move {
 	 * @param s	the color of the piece being placed
 	 */
 	public Move(int moveEncoding, Status s) {
+		int polarity = moveEncoding < 0 ? -1 : 1;
 		row = Math.abs(moveEncoding / 100);
 		col = (Math.abs(moveEncoding) - (row*100)) / 10;
-		rot = (Math.abs(moveEncoding) - (row*100 + col*10))*(moveEncoding/moveEncoding);
+		rot = (Math.abs(moveEncoding) - (row*100 + col*10))*(polarity);
 		color = s;
 	}
 
@@ -99,7 +100,8 @@ public class Move {
 	 * @return integer representation of a move
 	 */
 	public int toInt() {
-		return (rot/rot)*(row*100 + col*10 + Math.abs(rot));
+		int polarity = rot < 0 ? -1 : 1;
+		return polarity*(row*100 + col*10 + Math.abs(rot));
 	}
 	
 	public String toString() {

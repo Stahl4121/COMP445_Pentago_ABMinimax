@@ -407,70 +407,76 @@ public class Board {
 	 * > 0 favors white
 	 * < 0 favors black
 	 */
-	public int getBoardFavorability() {
-		HashMap<Status, int[]> maxRun = new HashMap<Status, int[]>();
-		int[] b = new int[18];
-		int[] w = new int[18];
+	public int getBoardFavorability(Status color) {
+		int[] maxRun = new int[18];
 		for (int i = 0; i < 18; i++) {
-			b[i] = 0;
-			w[i] = 0;
+			maxRun[i] = 0;
 		}
-		maxRun.put(Status.BLACK, b);
-		maxRun.put(Status.WHITE, w);
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				//if the index is not the state we are checking, then we eliminate some wins
 				if (board[r][c] != Status.EMPTY) {
-					Status s1 = board[r][c];
-					Status s2 = Status.BLACK;
-					if (s1 == Status.BLACK) {
-						s2 = Status.WHITE;
+					if (board[r][c] == color) {
+						//horizontals
+						maxRun[r]++;
+						//vertical
+						maxRun[r + 6]++;
+						//diagonal
+						if (r == c) {
+							maxRun[12]++;
+						}
+						if (r + 1 == c) {
+							maxRun[13]++;
+						}
+						if (r - 1 == c) {
+							maxRun[14]++;
+						}
+						if (r + c == 5) {
+							maxRun[15]++;
+							maxRun[15] = 0;
+						}
+						if (r + c == 4) {
+							maxRun[16]++;
+						}
+						if (r + c == 6) {
+							maxRun[17]++;
+						}
 					}
-					//horizontals
-					maxRun.get(s1)[r]++;
-					maxRun.get(s2)[r] = 0;
-					//vertical
-					maxRun.get(s1)[r + 6]++;
-					maxRun.get(s2)[r + 6] = 0;
-					//diagonal
-					if (r == c) {
-						maxRun.get(s1)[12]++;
-						maxRun.get(s2)[12] = 0;
-					}
-					if (r + 1 == c) {
-						maxRun.get(s1)[13]++;
-						maxRun.get(s2)[13] = 0;
-					}
-					if (r - 1 == c) {
-						maxRun.get(s1)[14]++;
-						maxRun.get(s2)[14] = 0;
-					}
-					if (r + c == 5) {
-						maxRun.get(s1)[15]++;
-						maxRun.get(s2)[15] = 0;
-					}
-					if (r + c == 4) {
-						maxRun.get(s1)[16]++;
-						maxRun.get(s2)[16]++;
-					}
-					if (r + c == 6) {
-						maxRun.get(s1)[17]++;
-						maxRun.get(s2)[17] = 0;
+					else {
+						//horizontals
+						maxRun[r] = 0;
+						//vertical
+						maxRun[r + 6] = 0;
+						//diagonal
+						if (r == c) {
+							maxRun[12] = 0;
+						}
+						if (r + 1 == c) {
+							maxRun[13] = 0;
+						}
+						if (r - 1 == c) {
+							maxRun[14] = 0;
+						}
+						if (r + c == 5) {
+							maxRun[15] = 0;
+						}
+						if (r + c == 4) {
+							maxRun[16] = 0;
+						}
+						if (r + c == 6) {
+							maxRun[17] = 0;
+						}
 					}
 				}
 			}
 		}
-		int favB = 0;
-		int favW = 0;
+		int fav = 0;
 		for (int i = 0; i < 18; i++) {
-			if (maxRun.get(Status.BLACK)[i] > favB) {
-				favB = maxRun.get(Status.BLACK)[i];
-			}
-			if (maxRun.get(Status.WHITE)[i] > favW) {
-				favW = maxRun.get(Status.WHITE)[i];
+			if (maxRun[i] > fav) {
+				fav = maxRun[i];
 			}
 		}
-		return favW - favB;
+		return fav;
 	}
 	
 	
