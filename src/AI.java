@@ -41,7 +41,7 @@ public class AI extends Player{
 		ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
 
 		if (depth == 0 || possibleMoves.isEmpty() || b.winner() != Status.EMPTY) {
-			return b.getBoardFavorability();
+			return b.getBoardFavorability(s);
 		}
 				
 		if (maximize) {
