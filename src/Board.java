@@ -8,9 +8,9 @@ import java.util.HashMap;
  * [insert lawyer joke here]
  */
 public class Board {
-	private Status[][] board;	//the Pentago board itself (it's a square)
-	private final int BOARD_SIZE = 6;		//the number of rows/columns in the board, which is a square
-	private final int QUAD_SIZE = BOARD_SIZE / 2;	//the size of a quadrant [and "most unnecessary variable in this project" goes to...]
+	public Status[][] board;						//the Pentago board itself (it's a square)
+	public final int BOARD_SIZE = 6;				//the number of rows/columns in the board, which is a square
+	public final int QUAD_SIZE = BOARD_SIZE / 2;	//the size of a quadrant [and "most unnecessary variable in this project" goes to...]
 	
 	public Board() {
 		board = new Status[BOARD_SIZE][BOARD_SIZE];
@@ -33,6 +33,10 @@ public class Board {
 			}
 		}
 	}
+	
+	
+	
+	
 	
 	public Status getStatus(int r, int c) {
 		return board[r][c];
