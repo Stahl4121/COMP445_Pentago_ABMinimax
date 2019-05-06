@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  */
 public class Person extends Player{
 	public BufferedReader input = new BufferedReader(new InputStreamReader(System.in)); 
-	public Person(Status color){
+	public Person(Status color) {
 		this.color = color;
 	}
 	
