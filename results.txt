@@ -1,0 +1,8 @@
+Depth: 8
+
+Move 1: 280
+Move 2: 264
+Move 3: 248
+Move 4: 232
+Move 5: 0
+Average moves: 204.8
