@@ -24,10 +24,10 @@ public class Driver_PentagoGame {
 		Scanner s = new Scanner(System.in);
 		Player miriam;
 		if (s.nextInt() == 1) {
-			miriam = new AI(DEPTH, Status.BLACK);
 			System.out.println("Choose your difficulty by inputting a number 1 or greater");
 			DEPTH = s.nextInt();
 			pw.println("Depth: " + DEPTH);
+			miriam = new AI(DEPTH, Status.BLACK);
 		} else {
 			miriam = new Person(Status.BLACK);
 		}
