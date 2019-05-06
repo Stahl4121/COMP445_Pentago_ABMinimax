@@ -5,24 +5,35 @@
 public class Move {
 	private int row;
 	private int col;
-	private Status stat;
+	private Status color;
 	private int rot;
-	private int favorability;
 
 	/**
 	 * Constructor for Move
 	 * @param r row of move
 	 * @param c column of move
-	 * @param piece Color of piece being placed <--lol isn't colour british? or is this for purebreds?
+	 * @param s Color of piece being placed
 	 */
-	public Move(int r,int c, Status piece, int rotation){
+	public Move(int r,int c, Status s, int rotation){
 		row=r;
 		col=c;
-		stat=piece;
+		color=s;
 		rot = rotation;
 	}
-	
-	
+
+	/**
+	 * Creates a Move equal to the representation  
+	 * returned by minimax (an integer representing a move)
+	 * 
+	 * @param moveEncoding an integer representation of a move
+	 * @param s	the color of the piece being placed
+	 */
+	public Move(int moveEncoding, Status s) {
+		row = Math.abs(moveEncoding / 100);
+		col = (Math.abs(moveEncoding) - (row*100)) / 10;
+		rot = (Math.abs(moveEncoding) - (row*100 + col*10))*(moveEncoding/moveEncoding);
+		color = s;
+	}
 
 	/**
 	 * Copy constructor for Move
@@ -31,32 +42,19 @@ public class Move {
 	public Move(Move m){
 		this.row=m.row;
 		this.col=m.col;
-		this.stat=m.stat;
+		this.color=m.color;
 	}
 	
 	
-	
 	/**
-	 * Copy constructor that allows us to add favorability for move
-	 * @param m a move we copy
-	 * @param fav
+	 * Default constructor for Move
 	 */
-	public Move(Move m, int fav){
-		this.row=m.row;
-		this.col=m.col;
-		this.stat=m.stat;
-		favorability = fav;
-	}
-	
-	/**
-	 * Default constructor for Move. Creates a move with an impossible move that cannot
-	 * be played solely for an ai's inability to not move.
-	 */
-	public Move(){		//is is purely for if there are no possible moves
+	public Move(){
 		row=-1;
 		col=-1;
-		stat=Status.EMPTY;
+		color=Status.EMPTY;
 	}
+
 	/**
 	 * 
 	 * @return Returns row of the move object
@@ -78,7 +76,7 @@ public class Move {
 	 * @return Returns color of the SquareStatus for the move object
 	 */
 	public Status getColor(){
-		return stat;
+		return color;
 	}
 	
 	/**
@@ -93,10 +91,15 @@ public class Move {
 	}
 	
 	/**
-	 * @return the favorability of this move
+	 * Converts a move into an integer representation.
+	 * Used by minimax.
+	 * E.g. Place piece on (4,5) and rotate 2nd quad ctrclockwise:
+	 * 			(-2/-2) * (400 + 50 + 2) = -452
+	 * 
+	 * @return integer representation of a move
 	 */
-	public int getFavorability() {
-		return favorability;
+	public int toInt() {
+		return (rot/rot)*(row*100 + col*10 + Math.abs(rot));
 	}
 	
 	public String toString() {
@@ -113,6 +116,6 @@ public class Move {
 				ro += " counterclockwise";
 			}
 		}
-		return stat + ": row "+row+", column "+col+ro;
+		return color + ": row "+row+", column "+col+ro;
 	}
 }

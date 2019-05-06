@@ -489,7 +489,10 @@ public class Board {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (board[r][c] == Status.EMPTY) {
 					for (int q = -4; q < 5; q++) {
-						moves.add(new Move(r, c, player, q));
+						//You must make a rotation
+						if (q != 0) {
+							moves.add(new Move(r, c, player, q));
+						}
 					}
 				}
 			}

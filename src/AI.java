@@ -6,10 +6,10 @@
  */
 import java.util.ArrayList;
 public class AI extends Player{
-	public int depth;
+	public int maxDepth;
 	
-	public AI(int depth, Status color) {
-		this.depth = depth;
+	public AI(int maxDepth, Status color) {
+		this.maxDepth = maxDepth;
 		this.color = color;
 	}
 	
@@ -19,49 +19,78 @@ public class AI extends Player{
 	 */
 	@Override
 	public void makeMove(Board b) {
-		b.move(minimax(b, depth, color));
+		
+		int moveEncoding = minimax(b, maxDepth, color);
+		
+		b.move(new Move(moveEncoding, color));
 	}
 	
-	//white is the maximizing player
-	//black is the minimizing player
-	public Move minimax(Board b, int depth, Status s) {
-		Move maxEval;
-		Move minEval;
-		Move eval;
+
+	public int minimax(Board b, int depth, Status s) {
+		int maxEval;
+		int minEval;
+		int eval;
 		
 		//figure out whether we are the maximizing player
 		boolean maximize = true;
-		if (s == Status.BLACK) {
+		if (s != this.color) {
 			maximize = false;
 		}
 		
-		if (depth == 0 || b.getPossibleMoves(s).isEmpty() || b.winner() != Status.EMPTY) {
-			return new Move(new Move(), b.getBoardFavorability());
+		ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
+
+		if (depth == 0 || possibleMoves.isEmpty() || b.winner() != Status.EMPTY) {
+			return b.getBoardFavorability();
 		}
-		
+				
 		if (maximize) {
-			maxEval = new Move(new Move(), Integer.MAX_VALUE);
-			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
+			maxEval = Integer.MIN_VALUE;
+			Move bestMove = null;
+			
+			//Flip the color for the next depth
+			s = s == Status.BLACK ? Status.WHITE : Status.BLACK;
+			
 			for (int i = 0; i < possibleMoves.size(); i++) {
+				
+				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
-				eval = minimax(b.move(m), depth - 1, s);
-				if (eval.getFavorability() > maxEval.getFavorability()) {
-					maxEval = new Move(eval, eval.getFavorability());
+				eval = minimax(copy.move(m), depth - 1, s);
+				
+				if (eval > maxEval) {
+					maxEval = eval;
+					
+					//Only store the best move for the current board
+					if(depth == maxDepth) {
+						bestMove = m;
+					}
 				}
 			}
+			
+			//If this is the original minimax call
+			if(depth == maxDepth) {
+				return bestMove.toInt();
+			}
+			//otherwise
 			return maxEval;
 		}
-		
 		else {
-			minEval = new Move(new Move(), Integer.MAX_VALUE);
-			ArrayList<Move> possibleMoves = b.getPossibleMoves(s);
+			
+			//Flip the color for the next depth
+			s = s == Status.BLACK ? Status.WHITE : Status.BLACK;
+			
+			minEval = Integer.MAX_VALUE;
+			
 			for (int i = 0; i < possibleMoves.size(); i++) {
+				
+				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
-				eval = minimax(b.move(m), depth, s);
-				if (eval.getFavorability() < minEval.getFavorability()) {
-					minEval = new Move(eval, eval.getFavorability());
+				eval = minimax(copy.move(m), depth, s);
+				
+				if (eval < minEval) {
+					minEval = eval;
 				}
 			}
+			
 			return minEval;
 		}
 		
