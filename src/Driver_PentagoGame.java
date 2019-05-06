@@ -35,13 +35,13 @@ public class Driver_PentagoGame {
 		int avgMoves = 0;
 		int count = 0;
         while(b.winner()==Status.EMPTY) {        	
-        	sarah.makeMove(b);
+        	b.makeMove(sarah.getMove(b));
 	        // show player's move
 	        System.out.println(b.toString());
 	        //AI makes a move
 	        //ai.makeMove(b);
 	        AI.numMoves = 0;
-			miriam.makeMove(b);
+        	b.makeMove(miriam.getMove(b));
 			System.out.println(AI.numMoves);
 			avgMoves += AI.numMoves;
 			count++;

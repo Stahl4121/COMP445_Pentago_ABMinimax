@@ -28,12 +28,11 @@ public class Person extends Player{
 	        if (b.getStatus(row, col) == Status.EMPTY) {
 	        	b.addMarble(row, col, this.color);
 	        	b.rotate(rot);
-	        	break;
+	            return new Move(row,col, this.color, rot);
 	        }
 	        System.out.println("Input a valid move");
         }
         
-        return new Move();
 	}
 	
 }

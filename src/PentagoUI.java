@@ -43,8 +43,8 @@ public class PentagoUI extends Application {
 			boolean isP1Turn = true;
 			
 			//Player references are made, but not initialized to types
-			Player player1;
-			Player player2;
+			Player p1;
+			Player p2;
 
 			
 			
