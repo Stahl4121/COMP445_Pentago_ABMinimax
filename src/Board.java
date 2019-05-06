@@ -456,12 +456,17 @@ public class Board {
 				}
 			}
 		}
-		int favorability = 0;
+		int favB = 0;
+		int favW = 0;
 		for (int i = 0; i < 18; i++) {
-			favorability += maxRun.get(Status.BLACK)[i];
-			favorability -= maxRun.get(Status.WHITE)[i];
+			if (maxRun.get(Status.BLACK)[i] > favB) {
+				favB = maxRun.get(Status.BLACK)[i];
+			}
+			if (maxRun.get(Status.WHITE)[i] > favW) {
+				favW = maxRun.get(Status.WHITE)[i];
+			}
 		}
-		return favorability;
+		return favW - favB;
 	}
 	
 	

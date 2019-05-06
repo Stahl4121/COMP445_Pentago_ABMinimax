@@ -250,8 +250,8 @@ public class Driver_PentagoGame {
 		
 		
 		b.move(new Move(0, 0, Status.WHITE, -2));
-		//AI a = new AI(2, Status.BLACK);
-		//a.makeMove(b);
+		AI a = new AI(2, Status.BLACK);
+		a.makeMove(b);
 		System.out.println(b);
 		
 		//Create Pentago Game Structure (Board, moves, inputs, check win/lose conditions) {<- done i think}
