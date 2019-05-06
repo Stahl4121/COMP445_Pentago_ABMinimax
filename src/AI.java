@@ -5,6 +5,7 @@
  *
  */
 import java.util.ArrayList;
+
 public class AI extends Player{
 	public int maxDepth;
 	public static int numMoves;
@@ -18,12 +19,12 @@ public class AI extends Player{
 	 * @param b Takes in the current board 
 	 */
 	@Override
-	public void makeMove(Board b) {
+	public Move getMove(Board b) {
 		
 		int moveEncoding = minimax(b, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, color);
+		Move m = new Move(moveEncoding, color);
 		
-		System.out.println(new Move(moveEncoding , color));
-		b.move(new Move(moveEncoding, color));
+		return m;
 	}
 	
 
@@ -56,7 +57,7 @@ public class AI extends Player{
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
 				numMoves++;
-				eval = minimax(copy.move(m), depth - 1, alpha, beta, s);
+				eval = minimax(copy.movedBoard(m), depth - 1, alpha, beta, s);
 				
 				if (eval > maxEval) {
 					maxEval = eval;
@@ -92,7 +93,7 @@ public class AI extends Player{
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
 				numMoves++;
-				eval = minimax(copy.move(m), depth, alpha, beta, s);
+				eval = minimax(copy.movedBoard(m), depth, alpha, beta, s);
 				
 				if (eval < minEval) {
 					minEval = eval;

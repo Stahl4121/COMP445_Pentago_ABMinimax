@@ -16,7 +16,7 @@ public abstract class Player {
 	 * @throws IOException 
 	 * 
 	 */
-	abstract public void makeMove(Board b) throws IOException;
+	abstract public Move getMove(Board b) throws IOException;
 	
 	/**
 	 * A simple getter for the 

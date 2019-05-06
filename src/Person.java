@@ -8,12 +8,13 @@ import java.io.InputStreamReader;
  */
 public class Person extends Player{
 	public BufferedReader input = new BufferedReader(new InputStreamReader(System.in)); 
+	
 	public Person(Status color){
 		this.color = color;
 	}
 	
 	@Override
-	public void makeMove(Board b) throws IOException {               
+	public Move getMove(Board b) throws IOException {               
     	System.out.println("Input your next move");
         while(true) {
 	        String s = input.readLine(); 
@@ -25,11 +26,13 @@ public class Person extends Player{
 	      
 	        if (b.getStatus(row, col) == Status.EMPTY) {
 	        	b.addMarble(row, col, this.color);
-	        	b.parseAndRotate(rot);
+	        	b.rotate(rot);
 	        	break;
 	        }
 	        System.out.println("Input a valid move");
         }
+        
+        return new Move();
 	}
 	
 }
