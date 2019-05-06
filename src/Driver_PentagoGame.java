@@ -49,7 +49,7 @@ public class Driver_PentagoGame {
 			// show AI's move
 	        System.out.println(b.toString());
 		}
-        pw.println("Average moves: " + (double)avgMoves/count);
+        pw.println("Average moves: " + (double)avgMoves/(count - 1));
         System.out.println(b.winner() + " was the winner");
 		pw.close();
 	}
