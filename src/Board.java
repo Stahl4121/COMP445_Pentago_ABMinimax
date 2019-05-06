@@ -120,23 +120,27 @@ public class Board {
 			}
 		}
 	}
-
+	
 	//sorry it's ugly
+	/**
+	 * @return the winner of the game
+	 * returns empty if there is not winner
+	 */
 	public Status winner() {
-
+		
 		Status winner = Status.EMPTY;
 		boolean isBoardFull = true;
-
+			
 		//Check wins for black and white players
 		for (Status s: Status.values()) {
-
+				
 			//Only check wins for black/white, not for empty
 			if (s != Status.EMPTY) {
-
+				
 				boolean[][] horizontals = new boolean[BOARD_SIZE][2];
 				boolean[][] verticals = new boolean[BOARD_SIZE][2];
 				boolean[] diagonals = new boolean[8];
-
+					
 				for (int r = 0; r < BOARD_SIZE; r++) {
 					for (int c = 0; c < 2; c++) {
 						horizontals[r][c] = true;
@@ -198,12 +202,11 @@ public class Board {
 						}
 					}
 				}					
-
-				//to do: add a check for bools
+					
 				for (int r = 0; r < BOARD_SIZE; r++) {
 					for (int c = 0; c < 2; c++) {
 						if (horizontals[r][c] || verticals[r][c]) {
-
+							
 							//If winner isn't still status.empty, and the other player has won
 							//It is a tie and we return null
 							if (winner != Status.EMPTY) {
@@ -240,6 +243,7 @@ public class Board {
 
 		return winner;
 	}
+
 
 	/**
 	 * @return the favorability value of the board based on the number of runs
