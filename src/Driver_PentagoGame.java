@@ -247,10 +247,13 @@ public class Driver_PentagoGame {
 		}
 		System.out.print(b);
 		System.out.println(b.winner());
-		b.clear();
 		
-		AI a = new AI(5, Status.BLACK);
+		
+		b.addMarble(5, 1, Status.EMPTY);
+		System.out.println("\n\n" +b);
+		AI a = new AI(2, Status.BLACK);
 		a.makeMove(b);
+		System.out.println(b);
 		
 		//Create Pentago Game Structure (Board, moves, inputs, check win/lose conditions) {<- done i think}
 		//Create UI for game? (Maybe not too much harder than doing a console printed UI)

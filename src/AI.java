@@ -20,13 +20,14 @@ public class AI extends Player{
 	@Override
 	public void makeMove(Board b) {
 		
-		int moveEncoding = minimax(b, maxDepth, color);
+		int moveEncoding = minimax(b, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, color);
 		
+		System.out.println(new Move(moveEncoding , color));
 		b.move(new Move(moveEncoding, color));
 	}
 	
 
-	public int minimax(Board b, int depth, Status s) {
+	public int minimax(Board b, int depth, int alpha, int beta, Status s) {
 		int maxEval;
 		int minEval;
 		int eval;
@@ -54,7 +55,7 @@ public class AI extends Player{
 				
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
-				eval = minimax(copy.move(m), depth - 1, s);
+				eval = minimax(copy.move(m), depth - 1, alpha, beta, s);
 				
 				if (eval > maxEval) {
 					maxEval = eval;
@@ -63,6 +64,11 @@ public class AI extends Player{
 					if(depth == maxDepth) {
 						bestMove = m;
 					}
+				}
+				
+				alpha = Math.max(alpha, eval);
+				if (beta <= alpha) {
+					break;
 				}
 			}
 			
@@ -84,10 +90,15 @@ public class AI extends Player{
 				
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
-				eval = minimax(copy.move(m), depth, s);
+				eval = minimax(copy.move(m), depth, alpha, beta, s);
 				
 				if (eval < minEval) {
 					minEval = eval;
+				}
+				
+				beta = Math.max(beta, eval);
+				if (beta <= alpha) {
+					break;
 				}
 			}
 			
