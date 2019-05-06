@@ -471,11 +471,11 @@ public class Board {
 	 */
 	public Board move(Move m) {
 		Board b = new Board(this);
-		b.addMarble(m.getRow(), m.getCol(), m.getColor());
+		this.addMarble(m.getRow(), m.getCol(), m.getColor());
 		if (m.getRotation() != 0) {
-			b.rotate(Math.abs(m.getRotation()), m.getRotation() > 0);
+			this.rotate(Math.abs(m.getRotation()), m.getRotation() > 0);
 		}
-		return b;
+		return this;
 	}
 	
 	
