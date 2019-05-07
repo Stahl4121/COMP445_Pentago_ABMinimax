@@ -34,10 +34,6 @@ public class Board {
 		}
 	}
 
-
-
-
-
 	public Status getStatus(int r, int c) {
 		return board[r][c];
 	}
@@ -254,14 +250,6 @@ public class Board {
 		//figure out the color of the opposing player
 		Status hisColor = myColor==Status.WHITE ? Status.BLACK : Status.WHITE;
 		
-		//if this move's a win, we want it
-		if (this.winner() == myColor) {
-			return 100000;
-		}
-		else if (this.winner() == hisColor) {
-			return -100000;
-		}
-		
 		//holds favorability of the player
 		int myFav = 0;
 		int hisFav = 0;
@@ -403,7 +391,10 @@ public class Board {
 		//100 points for three in a row
 		for (int i = 0; i < 18; i++) {
 			if (me[i] >= 5) {
-				myFav += 100000;
+				//if there's a win
+				if (this.winner() == myColor) {
+					myFav += 100000;
+				}
 			}
 			if (me[i] == 4) {
 				myFav += 1000;
@@ -412,7 +403,10 @@ public class Board {
 				myFav += 100;
 			}
 			if (him[i] >= 5) {
-				hisFav += 100000;
+				//if there's a win
+				if (this.winner() == hisColor) {
+					myFav += 100000;
+				}
 			}
 			if (him[i] == 4) {
 				hisFav += 1000;

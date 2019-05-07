@@ -10,13 +10,7 @@ public class Driver_PentagoGame {
 	public static void main(String[] args) throws IOException {
 		//PROJECT TODO (Not necessarily in this class):
 		Board b = new Board();
-		for (int i = 0; i < 5; i++) {
-			b.addMarble(i, 0, Status.BLACK);
-		}
-		b.addMarble(3, 0, Status.EMPTY);
-		System.out.println(b);
-		System.out.println(b.getBoardFavorability(Status.BLACK));
-		//play (b);
+		play (b);
 	}
 
 	/*
