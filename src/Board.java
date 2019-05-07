@@ -33,10 +33,17 @@ public class Board {
 			}
 		}
 	}
-
-
-
-
+	
+	public boolean equals(Board b) {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				if (b.getStatus(r, c) != this.board[r][c]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	public Status getStatus(int r, int c) {
 		return board[r][c];
@@ -72,6 +79,18 @@ public class Board {
 	public void makeMove(Move m) {
 		addMarble(m.getRow(),m.getCol(),m.getColor());
 		rotate(m.getRotation());
+	}
+	
+	
+	/**
+	 * @param m
+	 * more like a "what would happen if we did this?
+	 */
+	public Board getMove(Move m) {
+		Board b = new Board(this);
+		b.addMarble(m.getRow(),m.getCol(),m.getColor());
+		b.rotate(m.getRotation());
+		return b;
 	}
 
 	/**
@@ -254,14 +273,6 @@ public class Board {
 		//figure out the color of the opposing player
 		Status hisColor = myColor==Status.WHITE ? Status.BLACK : Status.WHITE;
 		
-		//if this move's a win, we want it
-		if (this.winner() == myColor) {
-			return 100000;
-		}
-		else if (this.winner() == hisColor) {
-			return -100000;
-		}
-		
 		//holds favorability of the player
 		int myFav = 0;
 		int hisFav = 0;
@@ -403,7 +414,10 @@ public class Board {
 		//100 points for three in a row
 		for (int i = 0; i < 18; i++) {
 			if (me[i] >= 5) {
-				myFav += 100000;
+				//if there's a win
+				if (this.winner() == myColor) {
+					myFav += 100000;
+				}
 			}
 			if (me[i] == 4) {
 				myFav += 1000;
@@ -412,7 +426,10 @@ public class Board {
 				myFav += 100;
 			}
 			if (him[i] >= 5) {
-				hisFav += 100000;
+				//if there's a win
+				if (this.winner() == hisColor) {
+					myFav += 100000;
+				}
 			}
 			if (him[i] == 4) {
 				hisFav += 1000;
@@ -445,13 +462,16 @@ public class Board {
 	 * @return all the moves that player can do
 	 */
 	public ArrayList<Move> getPossibleMoves(Status player) {
+		Move m = new Move();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (board[r][c] == Status.EMPTY) {
 					for (int q = -4; q < 5; q++) {
-						//You must make a rotation
-						moves.add(new Move(r, c, player, q));
+						m = new Move(r, c, player, q);
+						if (this.getMove(new Move(r, c, player, 0)) != this.getMove(m)) {
+							moves.add(m);
+						}
 					}
 				}
 			}
