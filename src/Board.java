@@ -33,6 +33,17 @@ public class Board {
 			}
 		}
 	}
+	
+	public boolean equals(Board b) {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				if (b.getStatus(r, c) != this.board[r][c]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	public Status getStatus(int r, int c) {
 		return board[r][c];
@@ -68,6 +79,18 @@ public class Board {
 	public void makeMove(Move m) {
 		addMarble(m.getRow(),m.getCol(),m.getColor());
 		rotate(m.getRotation());
+	}
+	
+	
+	/**
+	 * @param m
+	 * more like a "what would happen if we did this?
+	 */
+	public Board getMove(Move m) {
+		Board b = new Board(this);
+		b.addMarble(m.getRow(),m.getCol(),m.getColor());
+		b.rotate(m.getRotation());
+		return b;
 	}
 
 	/**
@@ -439,13 +462,16 @@ public class Board {
 	 * @return all the moves that player can do
 	 */
 	public ArrayList<Move> getPossibleMoves(Status player) {
+		Move m = new Move();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (board[r][c] == Status.EMPTY) {
 					for (int q = -4; q < 5; q++) {
-						//You must make a rotation
-						moves.add(new Move(r, c, player, q));
+						m = new Move(r, c, player, q);
+						if (this.getMove(new Move(r, c, player, 0)) != this.getMove(m)) {
+							moves.add(m);
+						}
 					}
 				}
 			}
