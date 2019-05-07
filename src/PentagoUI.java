@@ -44,7 +44,7 @@ public class PentagoUI extends Application {
 			myGrid.setPadding(new Insets(25,25,25,25));
 
 			loadStartChoices();
-
+			
 			BorderPane borderPane = new BorderPane();
 			borderPane.setCenter(myGrid);
 
