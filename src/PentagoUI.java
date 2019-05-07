@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,10 +23,11 @@ public class PentagoUI extends Application {
 	GridPane myGrid;
 	Label gameMessage;
 	Button btnAI;
+	ArrayList<Button> rotateBtns;
 	int choice = 0;
 	boolean isP1Turn = true;
 	boolean hasPlaced = false;
-	boolean hasRotated = true;
+	boolean hasRotated = false;
 	int row = 0;
 	int col = 0;
 	int rot = 0;
@@ -45,6 +48,8 @@ public class PentagoUI extends Application {
 			myGrid.setPadding(new Insets(25,25,25,25));
 
 			loadStartChoices();
+			setupRotateButtons();
+			setupAIButton();
 
 			BorderPane borderPane = new BorderPane();
 			borderPane.setCenter(myGrid);
@@ -59,16 +64,94 @@ public class PentagoUI extends Application {
 		}
 	}
 
+	public void setupRotateButtons() {
+		try {
+		rotateBtns = new ArrayList<Button>();
+
+		for(int i=1; i<=8; i++) {
+			int rot = i;
+			if(((i-1) / 4) > 0) {
+				rot = -1* (i-4);
+			}
+				final int r = rot;
+				
+				Button btn = new Button("R " + r);
+				btn.setFont(new Font(12));
+
+				btn.addEventHandler(MouseEvent.MOUSE_ENTERED, (MouseEvent e) -> {
+					btn.setEffect(new DropShadow());
+				});
+				btn.addEventHandler(MouseEvent.MOUSE_EXITED, (MouseEvent e) -> {
+					btn.setEffect(null);
+				});
+
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+
+						if(isP1Turn) {
+							if(!hasRotated) {
+								b.rotate(r);
+								hasRotated = true;
+							}
+							if(hasPlaced) {
+								isP1Turn = false;
+								hasPlaced = false;
+								hasRotated = false;
+
+								if (choice == 2) {
+									gameMessage.setText("Click the button to let AI Black move!");
+								}
+								else {
+									gameMessage.setText("Black, it's your turn!");
+								}
+							}
+						}
+						else {
+							if (choice != 2) {
+								if(!hasRotated) {
+									b.rotate(r);
+									hasRotated = true;
+								}
+								if(hasPlaced) {
+									isP1Turn = true;
+									hasPlaced = false;
+									hasRotated = false;
+									
+									gameMessage.setText("White, it's your turn!");
+								}	
+							}
+						}
+						loadGameStart();
+					}
+				});
+
+				rotateBtns.add(btn);
+			}
+		}
+		catch(Exception e){}
+		
+	}
+
+
 	public void loadGameStart() {
 		try {
 			myGrid.getChildren().removeAll(myGrid.getChildren());
 
 			if (choice != 3) {
-				displayAIButton();	
+				myGrid.add(btnAI, 0, 6, 6, 1);
+			}
+			if (choice != 1) {
+				for(int i=0; i<4; i++) {
+					myGrid.add(rotateBtns.get(i), 7, i+1);
+				}
+				for(int i=4; i<8; i++) {
+					myGrid.add(rotateBtns.get(i), 8, i-3);
+				}
 			}
 
+			myGrid.add(gameMessage, 0, 7, 7, 1);
 			updateBoard();
-
 		}
 		catch(Exception e) {}
 	}
@@ -114,7 +197,6 @@ public class PentagoUI extends Application {
 					p1 = new Person(Status.WHITE);
 					p2 = new AI(AI_DEPTH, Status.BLACK);
 					loadGameStart();
-
 					gameMessage.setText("White, it's your turn!");
 				}
 			});
@@ -153,7 +235,7 @@ public class PentagoUI extends Application {
 		catch(Exception e) {}
 	}
 
-	public void displayAIButton() {
+	public void setupAIButton() {
 		try {
 			btnAI = new Button("Let AI Move");
 			DropShadow shadow = new DropShadow();
@@ -171,13 +253,11 @@ public class PentagoUI extends Application {
 					if(choice==1) {
 						if(isP1Turn) {
 							b.makeMove(((AI)p1).getMove(b));
-							updateBoard();
 							isP1Turn = false;
 							gameMessage.setText("AI White moved! Click the button to initiate AI Black's turn!");
 						}
 						else {
 							b.makeMove(((AI)p2).getMove(b));
-							updateBoard();
 							isP1Turn = true;
 							gameMessage.setText("AI Black moved! Click the button to initiate AI White's turn!");
 						}
@@ -185,24 +265,21 @@ public class PentagoUI extends Application {
 					else if(choice==2) {
 						if(!isP1Turn) {
 							b.makeMove(((AI)p2).getMove(b));
-							updateBoard();
 							isP1Turn = true;
 							gameMessage.setText("White, make your move!");
 						}
 					}
+					loadGameStart();
 				}
 			});
 
 			btnAI.setFont(new Font(14));
-			myGrid.add(btnAI, 0, 6, 6, 1);
 		}
 		catch(Exception e) {}
 	}
 
 	public void updateBoard() {
 		try {
-			//Clear board
-			myGrid.getChildren().removeAll(myGrid.getChildren());
 
 			// load the images
 			Image blackImg = new Image("/black.png");
@@ -237,6 +314,7 @@ public class PentagoUI extends Application {
 									}
 									if(hasRotated) {
 										isP1Turn = false;
+										hasRotated = false;
 										hasPlaced = false;
 
 										if (choice == 2) {
@@ -250,17 +328,18 @@ public class PentagoUI extends Application {
 								else {
 									if (choice != 2) {
 										if(!hasPlaced) {
-											b.addMarble(row, col, Status.WHITE);
+											b.addMarble(row, col, Status.BLACK);
 											hasPlaced = true;
 										}
 										if(hasRotated) {
 											isP1Turn = true;
+											hasRotated = false;
 											hasPlaced = false;
 											gameMessage.setText("White, it's your turn!");
 										}	
 									}
 								}
-								updateBoard();
+								loadGameStart();
 							}
 						});
 					}
@@ -274,9 +353,6 @@ public class PentagoUI extends Application {
 					myGrid.add(iv, c, r);
 				}
 			}
-
-			myGrid.add(btnAI, 0, 6, 6, 1);
-			myGrid.add(gameMessage, 0, 7, 6, 1);
 
 			if(b.winner() != Status.EMPTY) {
 				endGame();
