@@ -64,17 +64,44 @@ public class PentagoUI extends Application {
 		}
 	}
 
+	public void loadGameScreen() {
+		try {
+			myGrid.getChildren().removeAll(myGrid.getChildren());
+
+			if (choice != 3) {
+				myGrid.add(btnAI, 0, 6, 6, 1);
+			}
+			if (choice != 1) {
+				for(int i=0; i<4; i++) {
+					myGrid.add(rotateBtns.get(i), 7, i+1);
+				}
+				for(int i=4; i<8; i++) {
+					myGrid.add(rotateBtns.get(i), 8, i-3);
+				}
+			}
+
+			myGrid.add(gameMessage, 0, 7, 7, 1);
+			updateBoard();
+
+			Status s = b.winner();
+			if(s != Status.EMPTY) {
+				endGame(s);
+			}
+		}
+		catch(Exception e) {}
+	}
+
 	public void setupRotateButtons() {
 		try {
-		rotateBtns = new ArrayList<Button>();
+			rotateBtns = new ArrayList<Button>();
 
-		for(int i=1; i<=8; i++) {
-			int rot = i;
-			if(((i-1) / 4) > 0) {
-				rot = -1* (i-4);
-			}
+			for(int i=1; i<=8; i++) {
+				int rot = i;
+				if(((i-1) / 4) > 0) {
+					rot = -1* (i-4);
+				}
 				final int r = rot;
-				
+
 				Button btn = new Button("R " + r);
 				btn.setFont(new Font(12));
 
@@ -117,12 +144,12 @@ public class PentagoUI extends Application {
 									isP1Turn = true;
 									hasPlaced = false;
 									hasRotated = false;
-									
+
 									gameMessage.setText("White, it's your turn!");
 								}	
 							}
 						}
-						loadGameStart();
+						loadGameScreen();
 					}
 				});
 
@@ -130,30 +157,7 @@ public class PentagoUI extends Application {
 			}
 		}
 		catch(Exception e){}
-		
-	}
 
-
-	public void loadGameStart() {
-		try {
-			myGrid.getChildren().removeAll(myGrid.getChildren());
-
-			if (choice != 3) {
-				myGrid.add(btnAI, 0, 6, 6, 1);
-			}
-			if (choice != 1) {
-				for(int i=0; i<4; i++) {
-					myGrid.add(rotateBtns.get(i), 7, i+1);
-				}
-				for(int i=4; i<8; i++) {
-					myGrid.add(rotateBtns.get(i), 8, i-3);
-				}
-			}
-
-			myGrid.add(gameMessage, 0, 7, 7, 1);
-			updateBoard();
-		}
-		catch(Exception e) {}
 	}
 
 	public void loadStartChoices() {
@@ -177,8 +181,8 @@ public class PentagoUI extends Application {
 					choice = 1;
 					p1 = new AI(AI_DEPTH, Status.WHITE);
 					p2 = new AI(AI_DEPTH, Status.BLACK);
-					loadGameStart();
-					gameMessage.setText("White, it's your turn!");
+					loadGameScreen();
+					gameMessage.setText("Click to run AI White!");
 				}
 			});
 
@@ -196,7 +200,7 @@ public class PentagoUI extends Application {
 					choice = 2;
 					p1 = new Person(Status.WHITE);
 					p2 = new AI(AI_DEPTH, Status.BLACK);
-					loadGameStart();
+					loadGameScreen();
 					gameMessage.setText("White, it's your turn!");
 				}
 			});
@@ -214,8 +218,8 @@ public class PentagoUI extends Application {
 					choice = 3;
 					p1 = new Person(Status.WHITE);
 					p2 = new Person(Status.BLACK);
-					loadGameStart();
-					gameMessage.setText("Click the button to let the AI move!");
+					loadGameScreen();
+					gameMessage.setText("White it's your turn!");
 				}
 			});
 
@@ -254,12 +258,12 @@ public class PentagoUI extends Application {
 						if(isP1Turn) {
 							b.makeMove(((AI)p1).getMove(b));
 							isP1Turn = false;
-							gameMessage.setText("AI White moved! Click the button to initiate AI Black's turn!");
+							gameMessage.setText("AI White moved! Click to run AI Black!");
 						}
 						else {
 							b.makeMove(((AI)p2).getMove(b));
 							isP1Turn = true;
-							gameMessage.setText("AI Black moved! Click the button to initiate AI White's turn!");
+							gameMessage.setText("AI Black moved! Click to run AI White!");
 						}
 					}
 					else if(choice==2) {
@@ -269,7 +273,7 @@ public class PentagoUI extends Application {
 							gameMessage.setText("White, make your move!");
 						}
 					}
-					loadGameStart();
+					loadGameScreen();
 				}
 			});
 
@@ -339,7 +343,7 @@ public class PentagoUI extends Application {
 										}	
 									}
 								}
-								loadGameStart();
+								loadGameScreen();
 							}
 						});
 					}
@@ -354,15 +358,31 @@ public class PentagoUI extends Application {
 				}
 			}
 
-			if(b.winner() != Status.EMPTY) {
-				endGame();
-			}
 		}
 		catch(Exception e) {}
 	}
 
-	public void endGame() {
+	public void endGame(Status s) {
+		try {
+			myGrid.getChildren().removeAll(myGrid.getChildren());
+			updateBoard();
 
+			myGrid.add(gameMessage, 0, 7, 7, 1);
+			if(s == null) {
+				gameMessage.setText("The two players tied!");
+			}
+			else if(s == Status.BLACK) {
+				gameMessage.setText("Black wins!");
+			}
+			else {
+				gameMessage.setText("White wins!");
+			}
+
+			for(int i=0 ; i<myGrid.getChildren().size() ; i++){
+				myGrid.getChildren().get(i).setDisable(true);
+			}
+		}
+		catch(Exception e) {}
 	}
 
 	public static void main(String[] args) { launch(args); }
