@@ -80,18 +80,6 @@ public class Board {
 		addMarble(m.getRow(),m.getCol(),m.getColor());
 		rotate(m.getRotation());
 	}
-	
-	
-	/**
-	 * @param m
-	 * more like a "what would happen if we did this?
-	 */
-	public Board getMove(Move m) {
-		Board b = new Board(this);
-		b.addMarble(m.getRow(),m.getCol(),m.getColor());
-		b.rotate(m.getRotation());
-		return b;
-	}
 
 	/**
 	 * @param quadrant
@@ -467,15 +455,19 @@ public class Board {
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (board[r][c] == Status.EMPTY) {
+					if (((r == 1) || (r == 4)) && ((c == 1) || (c == 4))) {
+						moves.add(new Move(r, c, player, 0));
+					}
 					for (int q = -4; q < 5; q++) {
 						m = new Move(r, c, player, q);
-						if (this.getMove(new Move(r, c, player, 0)) != this.getMove(m)) {
+						if (!this.movedBoard(new Move(r, c, player, 0)).equals(this.movedBoard(m))) {
 							moves.add(m);
 						}
 					}
 				}
 			}
 		}
+		
 		return moves;
 	}
 

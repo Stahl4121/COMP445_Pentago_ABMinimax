@@ -8,10 +8,16 @@ import java.util.ArrayList;
 
 public class AI extends Player{
 	public int maxDepth;
-	public static int numMoves;
+	public int numMoves = 0;
 	public AI(int maxDepth, Status color) {
 		this.maxDepth = maxDepth;
 		this.color = color;
+	}
+	public void setNumMoves(int i) {
+		numMoves = i;
+	}
+	public int getNumMoves() {
+		return numMoves;
 	}
 	
 	/**
@@ -34,18 +40,22 @@ public class AI extends Player{
 		int minEval;
 		int eval;
 		
+		if (depth == 0  || b.winner() != Status.EMPTY) {
+			return b.getBoardFavorability(s);
+		}
 		
 		if(maximize) {
 			possibleMoves = b.getPossibleMoves(s);
+			//System.out.println(possibleMoves.size());
 		}
 		else {
 			//Want to be looking at the other player's moves made
 			Status opposingPlayer = s == Status.BLACK ? Status.WHITE : Status.BLACK;
 			possibleMoves = b.getPossibleMoves(opposingPlayer);
+			//System.out.println(possibleMoves.size());
 		}
-		
 
-		if (depth == 0 || possibleMoves.isEmpty() || b.winner() != Status.EMPTY) {
+		if (possibleMoves.isEmpty()) {
 			return b.getBoardFavorability(s);
 		}
 				
@@ -92,7 +102,7 @@ public class AI extends Player{
 				Board copy = new Board(b);
 				Move m = possibleMoves.get(i);
 				numMoves++;
-				eval = minimax(copy.movedBoard(m), depth, alpha, beta, s, true);
+				eval = minimax(copy.movedBoard(m), depth - 1, alpha, beta, s, true);
 				
 				if (eval < minEval) {
 					minEval = eval;
