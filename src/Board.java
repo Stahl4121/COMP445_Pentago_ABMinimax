@@ -252,11 +252,14 @@ public class Board {
 	 */
 	public int getBoardFavorability(Status myColor) {
 		//figure out the color of the opposing player
-		Status hisColor = Status.EMPTY;
-		for (Status s: Status.values()) {
-			if (s != myColor && s != Status.EMPTY) {
-				hisColor = s;
-			}
+		Status hisColor = myColor==Status.WHITE ? Status.BLACK : Status.WHITE;
+		
+		//if this move's a win, we want it
+		if (this.winner() == myColor) {
+			return 100000;
+		}
+		else if (this.winner() == hisColor) {
+			return -100000;
 		}
 		
 		//holds favorability of the player
@@ -272,8 +275,8 @@ public class Board {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (board[r][c] == myColor) {
 					//horizontals
-					me[r]++;
-					him[r] = 0;
+					me[c]++;
+					him[c] = 0;
 					//vertical
 					me[r + 6]++;
 					him[r + 6] = 0;
@@ -303,10 +306,10 @@ public class Board {
 						him[17] = 0;
 					}
 				}
-				if (board[r][c] == hisColor) {
+				else if (board[r][c] == hisColor) {
 					//horizontals
-					him[r]++;
-					me[r] = 0;
+					him[c]++;
+					me[c] = 0;
 					//vertical
 					him[r + 6]++;
 					me[r + 6] = 0;
@@ -336,7 +339,7 @@ public class Board {
 						me[17] = 0;
 					}
 				}
-				else { //it's empty- everything starts over
+				/*else { //it's empty- everything starts over
 					//horizontals
 					me[r] = 0;
 					him[r] = 0;
@@ -368,7 +371,7 @@ public class Board {
 						me[17] = 0;
 						him[17] = 0;
 					}
-				}
+				}*/
 			}
 		}
 		
@@ -399,7 +402,7 @@ public class Board {
 		//1000 points for four in a row
 		//100 points for three in a row
 		for (int i = 0; i < 18; i++) {
-			if (me[i] == 5) {
+			if (me[i] >= 5) {
 				myFav += 100000;
 			}
 			if (me[i] == 4) {
@@ -408,7 +411,7 @@ public class Board {
 			if (me[i] == 3) {
 				myFav += 100;
 			}
-			if (him[i] == 5) {
+			if (him[i] >= 5) {
 				hisFav += 100000;
 			}
 			if (him[i] == 4) {
