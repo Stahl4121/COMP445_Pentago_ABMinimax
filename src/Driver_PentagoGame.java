@@ -41,7 +41,12 @@ public class Driver_PentagoGame {
 	        //AI makes a move
 	        //ai.makeMove(b);
 	        AI.numMoves = 0;
-        	b.makeMove(miriam.getMove(b));
+	        if (b.winner() != Status.EMPTY) { 
+	        	break;
+	        }
+	        Move m = miriam.getMove(b);
+	        System.out.println(m);
+        	b.makeMove(m);
 			System.out.println(AI.numMoves);
 			avgMoves += AI.numMoves;
 			count++;

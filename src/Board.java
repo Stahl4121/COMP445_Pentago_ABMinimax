@@ -250,76 +250,177 @@ public class Board {
 	 * > 0 favors white
 	 * < 0 favors black
 	 */
-	public int getBoardFavorability(Status color) {
-		int[] maxRun = new int[18];
-		for (int i = 0; i < 18; i++) {
-			maxRun[i] = 0;
+	public int getBoardFavorability(Status myColor) {
+		//figure out the color of the opposing player
+		Status hisColor = Status.EMPTY;
+		for (Status s: Status.values()) {
+			if (s != myColor && s != Status.EMPTY) {
+				hisColor = s;
+			}
 		}
+		
+		//holds favorability of the player
+		int myFav = 0;
+		int hisFav = 0;
+		
+		//holds the runs for your player and yuor opPONENT
+		int[] me = new int[18];
+		int[] him = new int[18];
+		
+		//fill the runs array
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
-				//if the index is not the state we are checking, then we eliminate some wins
-				if (board[r][c] != Status.EMPTY) {
-					if (board[r][c] == color) {
-						//horizontals
-						maxRun[r]++;
-						//vertical
-						maxRun[r + 6]++;
-						//diagonal
-						if (r == c) {
-							maxRun[12]++;
-						}
-						if (r + 1 == c) {
-							maxRun[13]++;
-						}
-						if (r - 1 == c) {
-							maxRun[14]++;
-						}
-						if (r + c == 5) {
-							maxRun[15]++;
-							maxRun[15] = 0;
-						}
-						if (r + c == 4) {
-							maxRun[16]++;
-						}
-						if (r + c == 6) {
-							maxRun[17]++;
-						}
+				if (board[r][c] == myColor) {
+					//horizontals
+					me[r]++;
+					him[r] = 0;
+					//vertical
+					me[r + 6]++;
+					him[r + 6] = 0;
+					//diagonal
+					if (r == c) {
+						me[12]++;
+						him[12] = 0;
 					}
-					else {
-						//horizontals
-						maxRun[r] = 0;
-						//vertical
-						maxRun[r + 6] = 0;
-						//diagonal
-						if (r == c) {
-							maxRun[12] = 0;
-						}
-						if (r + 1 == c) {
-							maxRun[13] = 0;
-						}
-						if (r - 1 == c) {
-							maxRun[14] = 0;
-						}
-						if (r + c == 5) {
-							maxRun[15] = 0;
-						}
-						if (r + c == 4) {
-							maxRun[16] = 0;
-						}
-						if (r + c == 6) {
-							maxRun[17] = 0;
-						}
+					if (r + 1 == c) {
+						me[13]++;
+						him[13] = 0;
+					}
+					if (r - 1 == c) {
+						me[14]++;
+						him[14] = 0;
+					}
+					if (r + c == 5) {
+						me[15]++;
+						him[15] = 0;
+					}
+					if (r + c == 4) {
+						me[16]++;
+						him[16] = 0;
+					}
+					if (r + c == 6) {
+						me[17]++;
+						him[17] = 0;
+					}
+				}
+				if (board[r][c] == hisColor) {
+					//horizontals
+					him[r]++;
+					me[r] = 0;
+					//vertical
+					him[r + 6]++;
+					me[r + 6] = 0;
+					//diagonal
+					if (r == c) {
+						him[12]++;
+						me[12] = 0;
+					}
+					if (r + 1 == c) {
+						him[13]++;
+						me[13] = 0;
+					}
+					if (r - 1 == c) {
+						him[14]++;
+						me[14] = 0;
+					}
+					if (r + c == 5) {
+						him[15]++;
+						me[15] = 0;
+					}
+					if (r + c == 4) {
+						him[16]++;
+						me[16] = 0;
+					}
+					if (r + c == 6) {
+						him[17]++;
+						me[17] = 0;
+					}
+				}
+				else { //it's empty- everything starts over
+					//horizontals
+					me[r] = 0;
+					him[r] = 0;
+					//vertical
+					me[r + 6] = 0;
+					him[r + 6] = 0;
+					//diagonal
+					if (r == c) {
+						me[12] = 0;
+						him[12] = 0;
+					}
+					if (r + 1 == c) {
+						me[13] = 0;
+						him[13] = 0;
+					}
+					if (r - 1 == c) {
+						me[14] = 0;
+						him[14] = 0;
+					}
+					if (r + c == 5) {
+						me[15] = 0;
+						him[15] = 0;
+					}
+					if (r + c == 4) {
+						me[16] = 0;
+						him[16] = 0;
+					}
+					if (r + c == 6) {
+						me[17] = 0;
+						him[17] = 0;
 					}
 				}
 			}
 		}
-		int fav = 0;
+		
+		//total up favorability:
+		//5 points for having your marble in the center of the quadrant
+		if (board[1][1] == myColor) {
+			myFav += 5;
+		} else if (board[1][1] == hisColor) {
+			hisFav += 5;
+		}
+		if (board[4][4] == myColor) {
+			myFav += 5;
+		} else if (board[4][4] == hisColor) {
+			hisFav += 5;
+		}
+		if (board[1][4] == myColor) {
+			myFav += 5;
+		} else if (board[1][4] == hisColor) {
+			hisFav += 5;
+		}
+		if (board[4][1] == myColor) {
+			myFav += 5;
+		} else if (board[4][1] == hisColor) {
+			hisFav += 5;
+		}
+		
+		//100000 points for five in a row
+		//1000 points for four in a row
+		//100 points for three in a row
 		for (int i = 0; i < 18; i++) {
-			if (maxRun[i] > fav) {
-				fav = maxRun[i];
+			if (me[i] == 5) {
+				myFav += 100000;
+			}
+			if (me[i] == 4) {
+				myFav += 1000;
+			}
+			if (me[i] == 3) {
+				myFav += 100;
+			}
+			if (him[i] == 5) {
+				hisFav += 100000;
+			}
+			if (him[i] == 4) {
+				hisFav += 1000;
+			}
+			if (him[i] == 3) {
+				hisFav += 100;
 			}
 		}
-		return fav;
+		
+		//return the difference between your favorability and your opposition's favorability
+		return myFav-hisFav;
 	}
 
 
@@ -347,9 +448,7 @@ public class Board {
 				if (board[r][c] == Status.EMPTY) {
 					for (int q = -4; q < 5; q++) {
 						//You must make a rotation
-						if (q != 0) {
-							moves.add(new Move(r, c, player, q));
-						}
+						moves.add(new Move(r, c, player, q));
 					}
 				}
 			}
