@@ -408,7 +408,7 @@ public class Board {
 			if (him[i] >= 5) {
 				//if there's a win
 				if (this.winner() == hisColor) {
-					myFav += 100000;
+					hisFav += 100000;
 				}
 			}
 			if (him[i] == 4) {
