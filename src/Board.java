@@ -12,8 +12,14 @@ public class Board {
 	public final int BOARD_SIZE = 6;				//the number of rows/columns in the board, which is a square
 	public final int QUAD_SIZE = BOARD_SIZE / 2;	//the size of a quadrant [and "most unnecessary variable in this project" goes to...]
 
+	/**
+	 * initialize a board object
+	 */
 	public Board() {
+		//create an array to represent the board
 		board = new Status[BOARD_SIZE][BOARD_SIZE];
+		
+		//fill the array- every index is empty
 		for(int r = 0; r < BOARD_SIZE; r++) {
 			for(int c = 0; c < BOARD_SIZE; c++) {
 				board[r][c] = Status.EMPTY;
@@ -23,10 +29,13 @@ public class Board {
 
 	/**
 	 * copy constructor for board
-	 * @param b
+	 * @param b- the board we are copying
 	 */
 	public Board(Board b) {
+		//create a new board array
 		board = new Status[BOARD_SIZE][BOARD_SIZE];
+		
+		//copy b's array into the new array
 		for(int r = 0; r < BOARD_SIZE; r++) {
 			for(int c = 0; c < BOARD_SIZE; c++) {
 				board[r][c] = b.getStatus(r, c);
@@ -34,7 +43,12 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * @param b- gets a board
+	 * @return whether this is equal to b
+	 */
 	public boolean equals(Board b) {
+		//as soon as we find an inequality between the two boards, return false
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
 				if (b.getStatus(r, c) != this.board[r][c]) {
@@ -42,9 +56,16 @@ public class Board {
 				}
 			}
 		}
+		
+		//if we make it between the loops, return true
 		return true;
 	}
-
+	
+	/**
+	 * @param r row
+	 * @param c column
+	 * @return return the board at those indeces
+	 */
 	public Status getStatus(int r, int c) {
 		return board[r][c];
 	}
@@ -73,7 +94,6 @@ public class Board {
 	
 	/**
 	 * 	executes a move
-	 * 
 	 *  @param m	the move to execute
 	 */
 	public void makeMove(Move m) {
@@ -128,7 +148,6 @@ public class Board {
 		}
 	}
 	
-	//sorry it's ugly
 	/**
 	 * @return the winner of the game
 	 * returns empty if there is not winner
@@ -166,20 +185,26 @@ public class Board {
 						if (isBoardFull && board[r][c] == Status.EMPTY) {
 							isBoardFull = false;
 						}
-
+						//check if win conditions are broken
 						if (board[r][c] != s) { 
+							
+							//horizontal wins
 							if (c < BOARD_SIZE - 1) {
 								horizontals[r][0] = false;
 							}
 							if (c > 0) {
 								horizontals[r][1] = false;
 							}
+							
+							//vertical wins
 							if (r < BOARD_SIZE - 1) {
 								verticals[c][0] = false;
 							}
 							if (r > 0) {
 								verticals[c][1] = false;
 							}
+							
+							//diagonal wins
 							if (r == c) {
 								if (r > 0) {
 									diagonals[0] = false;
@@ -338,39 +363,6 @@ public class Board {
 						me[17] = 0;
 					}
 				}
-				/*else { //it's empty- everything starts over
-					//horizontals
-					me[r] = 0;
-					him[r] = 0;
-					//vertical
-					me[r + 6] = 0;
-					him[r + 6] = 0;
-					//diagonal
-					if (r == c) {
-						me[12] = 0;
-						him[12] = 0;
-					}
-					if (r + 1 == c) {
-						me[13] = 0;
-						him[13] = 0;
-					}
-					if (r - 1 == c) {
-						me[14] = 0;
-						him[14] = 0;
-					}
-					if (r + c == 5) {
-						me[15] = 0;
-						him[15] = 0;
-					}
-					if (r + c == 4) {
-						me[16] = 0;
-						him[16] = 0;
-					}
-					if (r + c == 6) {
-						me[17] = 0;
-						him[17] = 0;
-					}
-				}*/
 			}
 		}
 		
@@ -437,10 +429,14 @@ public class Board {
 	 * @return 		what the board would be were m executed
 	 */
 	public Board movedBoard(Move m) {
+		//copy the board
 		Board b = new Board(this);
+		
+		//add a marble
 		b.addMarble(m.getRow(), m.getCol(), m.getColor());
 		b.rotate(m.getRotation());
-
+		
+		//return the board
 		return b;
 	}
 
@@ -450,16 +446,31 @@ public class Board {
 	 * @return all the moves that player can do
 	 */
 	public ArrayList<Move> getPossibleMoves(Status player) {
+		//initialize a move
 		Move m = new Move();
+		
+		//initialize an arraylist to hold all the moves
 		ArrayList<Move> moves = new ArrayList<Move>();
+		
+		//iterate through the rows and columns of the board
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			for (int c = 0; c < BOARD_SIZE; c++) {
+				
+				//if the board is empty
 				if (board[r][c] == Status.EMPTY) {
+					
+					//get ready for those centers of the quadrant
 					if (((r == 1) || (r == 4)) && ((c == 1) || (c == 4))) {
-						moves.add(new Move(r, c, player, 0));
+						moves.add(new Move(r, c, player, 1));
 					}
+					
+					//add all the rotations of all the moves
 					for (int q = -4; q < 5; q++) {
+						
+						//get a new move
 						m = new Move(r, c, player, q);
+						
+						//if the rotation doesn't change the board, don't bother with it
 						if (!this.movedBoard(new Move(r, c, player, 0)).equals(this.movedBoard(m))) {
 							moves.add(m);
 						}
