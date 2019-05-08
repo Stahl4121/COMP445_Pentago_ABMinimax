@@ -28,7 +28,6 @@ public class PentagoUI extends Application {
 	boolean isP1Turn = true;
 	boolean hasPlaced = false;
 	boolean hasRotated = false;
-	boolean demoGreedy = false;
 	int row = 0;
 	int col = 0;
 	int rot = 0;
@@ -180,14 +179,7 @@ public class PentagoUI extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					choice = 1;
-					if (demoGreedy) {
-						p1 = new GreedyAI(Status.WHITE);
-
-					}
-					else {
-						p1 = new AI(AI_DEPTH, Status.WHITE);
-					}
-					
+					p1 = new AI(AI_DEPTH, Status.WHITE);
 					p2 = new AI(AI_DEPTH, Status.BLACK);
 					loadGameScreen();
 					gameMessage.setText("Click to run AI White!");
@@ -207,14 +199,7 @@ public class PentagoUI extends Application {
 				public void handle(ActionEvent event) {
 					choice = 2;
 					p1 = new Person(Status.WHITE);
-
-					if (demoGreedy) {
-						p2 = new GreedyAI(Status.BLACK);
-
-					}
-					else {
 						p2 = new AI(AI_DEPTH, Status.BLACK);
-					}
 					loadGameScreen();
 					gameMessage.setText("White, it's your turn!");
 				}
@@ -271,14 +256,7 @@ public class PentagoUI extends Application {
 				public void handle(ActionEvent event) {
 					if(choice==1) {
 						if(isP1Turn) {
-
-							if (demoGreedy) {
-								b.makeMove(((GreedyAI)p1).getMove(b));
-
-							}
-							else {
 								b.makeMove(((AI)p1).getMove(b));
-							}
 							isP1Turn = false;
 							gameMessage.setText("AI White moved! Click to run AI Black!");
 						}
@@ -290,13 +268,7 @@ public class PentagoUI extends Application {
 					}
 					else if(choice==2) {
 						if(!isP1Turn) {
-							if (demoGreedy) {
-								b.makeMove(((GreedyAI)p2).getMove(b));
-
-							}
-							else {
 								b.makeMove(((AI)p1).getMove(b));
-							}
 							isP1Turn = true;
 							gameMessage.setText("White, make your move!");
 						}

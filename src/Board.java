@@ -485,6 +485,7 @@ public class Board {
 						if (!this.movedBoard(new Move(r, c, player, 0)).equals(boardWithMove)) {
 							int score = boardWithMove.getBoardFavorability(player);
 							
+							//Remove if statement to get rid of the cuts
 							if(score >= maxScore) {
 								maxScore = score;
 								moves.add(m);
