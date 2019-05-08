@@ -28,7 +28,7 @@ public class PentagoUI extends Application {
 	boolean isP1Turn = true;
 	boolean hasPlaced = false;
 	boolean hasRotated = false;
-	boolean demoGreedy = true;
+	boolean demoGreedy = false;
 	int row = 0;
 	int col = 0;
 	int rot = 0;

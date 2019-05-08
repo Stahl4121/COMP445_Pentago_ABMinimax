@@ -408,7 +408,14 @@ public class Board {
 			if (him[i] >= 5) {
 				//if there's a win
 				if (this.winner() == hisColor) {
-					hisFav += 100000;
+					//Wait it higher if he moved first 
+					//(to break ties when both would win on the same turn #)
+					if (hisColor == Status.WHITE) {
+						hisFav += 100100;
+					}
+					else {
+						hisFav += 100000;
+					}
 				}
 			}
 			if (him[i] == 4) {
