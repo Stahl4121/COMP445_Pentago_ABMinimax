@@ -484,7 +484,10 @@ public class Board {
 
 	//returns the board
 	public String toString() {
+		//we will return this
 		String ret = "";
+		
+		//add the board to a string
 		for (int r = 0; r < BOARD_SIZE; r++) {
 			if (r == 3) {
 				ret += "-------------\n";
@@ -497,6 +500,8 @@ public class Board {
 			}
 			ret += "\n";
 		}
+		
+		//return the string
 		return ret;
 	}
 
