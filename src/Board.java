@@ -478,7 +478,7 @@ public class Board {
 						if (!this.movedBoard(new Move(r, c, player, 0)).equals(boardWithMove)) {
 							int score = boardWithMove.getBoardFavorability(player);
 							
-							if(score > maxScore) {
+							if(score >= maxScore) {
 								maxScore = score;
 								moves.add(m);
 							}
