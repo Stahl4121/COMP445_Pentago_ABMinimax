@@ -1,3 +1,11 @@
-Depth: 4
-Move 1: 244431616	Time: 718.599169423
-Move 2: 209582404	Time: 601.636814929
+Depth: 6
+Move 1: 5086	Time: 0.6296977
+Move 2: 10105	Time: 0.8866413
+Move 3: 20161	Time: 1.4281168
+Move 4: 15138	Time: 0.9171782
+Move 5: 4932	Time: 0.3050472
+Move 6: 854	Time: 0.0547011
+Move 7: 524	Time: 0.0334981
+Move 8: 109	Time: 0.0083166
+Move 9: 214	Time: 0.0172527
+Average moves: 7140.375

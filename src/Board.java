@@ -441,6 +441,7 @@ public class Board {
 	}
 
 
+	
 	/**
 	 * @param player
 	 * @return all the moves that player can do
@@ -451,6 +452,8 @@ public class Board {
 		
 		//initialize an arraylist to hold all the moves
 		ArrayList<Move> moves = new ArrayList<Move>();
+		
+		int maxScore = Integer.MIN_VALUE;
 		
 		//iterate through the rows and columns of the board
 		for (int r = 0; r < BOARD_SIZE; r++) {
@@ -469,10 +472,16 @@ public class Board {
 						
 						//get a new move
 						m = new Move(r, c, player, q);
+						Board boardWithMove = this.movedBoard(m);
 						
 						//if the rotation doesn't change the board, don't bother with it
-						if (!this.movedBoard(new Move(r, c, player, 0)).equals(this.movedBoard(m))) {
-							moves.add(m);
+						if (!this.movedBoard(new Move(r, c, player, 0)).equals(boardWithMove)) {
+							int score = boardWithMove.getBoardFavorability(player);
+							
+							if(score > maxScore) {
+								maxScore = score;
+								moves.add(m);
+							}
 						}
 					}
 				}

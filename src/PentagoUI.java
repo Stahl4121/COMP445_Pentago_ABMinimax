@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class PentagoUI extends Application {
-	final int AI_DEPTH = 3;
+	final int AI_DEPTH = 6;
 	Board b;
 	GridPane myGrid;
 	Label gameMessage;
